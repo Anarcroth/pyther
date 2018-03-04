@@ -2,8 +2,51 @@
 
 import sys,os
 import curses
+import random
+import time
+
+def main_menu(stdscr):
+    stdscr.nodelay(0);
+    stdscr.clear();
+    stdscr.border();
+
+    height, width = stdscr.getmaxyx();
+    option = 0;
+    selection = -1;
+    while selection < 0:
+        graphics = [0]*4;
+        graphics[option] = curses.A_REVERSE;
+
+        stdscr.addstr(int(height / 2 - 5), int(width / 2 - 3), "Pyther");
+        stdscr.addstr(int(height / 2 - 2), int(width / 2 - 6), "Start typing", graphics[0]);
+        stdscr.addstr(int(height / 2 - 1), int(width / 2 - 3), "Modes", graphics[1]);
+        stdscr.addstr(int(height / 2), int(width / 2 - 5), "High scores", graphics[2]);
+        stdscr.addstr(int(height / 2 + 1), int(width / 2 - 2), "Exit", graphics[3]);
+
+        stdscr.refresh();
+
+        action = stdscr.getch();
+        if action == curses.KEY_UP:
+            option = (option - 1) % 4;
+        elif action == curses.KEY_DOWN:
+            option = (option + 1) % 4;
+        elif action == ord("\n"):
+            selection = option;
+
+        if selection == 0:
+            return;
+        elif selection == 1:
+            # TODO show different modes
+            return;
+        elif selection == 2:
+            # TODO shows high scores
+            return;
+        elif selection == 3:
+            sys.exit();
+
 
 def draw_menu(stdscr):
+    main_menu(stdscr);
     player_input = 0
     cursor_x = 0
     cursor_y = 0
@@ -22,6 +65,7 @@ def draw_menu(stdscr):
 
         # Initialization
         stdscr.clear()
+        stdscr.border()
         height, width = stdscr.getmaxyx()
 
         if player_input == curses.KEY_DOWN:
@@ -68,6 +112,7 @@ def draw_menu(stdscr):
         stdscr.attroff(curses.A_BOLD)
 
         # Print rest of text
+        stdscr.addstr(start_y, start_x_title, title, curses.color_pair(2))
         stdscr.addstr(start_y + 1, start_x_subtitle, subtitle)
         stdscr.addstr(start_y + 3, (width // 2) - 2, '-' * 4)
         stdscr.addstr(start_y + 5, start_x_keystr, keystr)
