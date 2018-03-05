@@ -48,6 +48,7 @@ def main_menu(stdscr):
 
 def init_pyther(stdscr):
     height, width = stdscr.getmaxyx()
+    max_main_panel_y, max_main_panel_x = int(height / 3 - 5), int(width / 3);
     player_input = 0
     cursor_x = 0
     cursor_y = 0
@@ -71,13 +72,17 @@ def init_pyther(stdscr):
         stdscr.border()
 
         for n in range(80):
-            stdscr.addstr(int(height / 3 - 5), int(width / 3 + n), "-") #(curses.ACS_HLINE)
+            stdscr.addstr(int(height / 3 - 5), int(width / 3 + n), "-") # TODO use -> (curses.ACS_HLINE)
             stdscr.addstr(int(height / 3 - 1), int(width / 3 + n), "-")
 
-        n = 0;
-        for word in words[:10]:
-            n += 1;
-            stdscr.addstr(int(height / 3 - 4), int(width / 3 + n), word + " ")
+        # TODO add side borders
+
+        # TODO add random selection of words
+        prev_pos_x = 0;
+        for word in words[0:20]:
+            stdscr.addstr(int(height / 3 - 4), int(width / 3 + prev_pos_x + 1), word)
+            prev_pos_x += len(word + " ")
+
 
         if player_input == curses.KEY_DOWN:
             cursor_y = cursor_y + 1
