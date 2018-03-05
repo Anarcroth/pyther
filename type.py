@@ -1,4 +1,5 @@
 #!bin/python3
+# -*- coding: utf-8 -*-
 
 import sys,os
 import curses
@@ -17,7 +18,7 @@ def main_menu(stdscr):
         graphics = [0]*4;
         graphics[option] = curses.A_REVERSE;
 
-        stdscr.addstr(int(height / 2 - 5), int(width / 2 - 3), "Pyther");
+        stdscr.addstr(int(height / 2 - 5), int(width / 2 - 8), "Welcome to Pyther");
         stdscr.addstr(int(height / 2 - 2), int(width / 2 - 6), "Start typing", graphics[0]);
         stdscr.addstr(int(height / 2 - 1), int(width / 2 - 3), "Modes", graphics[1]);
         stdscr.addstr(int(height / 2), int(width / 2 - 5), "High scores", graphics[2]);
@@ -34,7 +35,7 @@ def main_menu(stdscr):
             selection = option;
 
         if selection == 0:
-            return;
+            init_pyther(stdscr);
         elif selection == 1:
             # TODO show different modes
             return;
@@ -45,14 +46,16 @@ def main_menu(stdscr):
             sys.exit();
 
 
-def draw_menu(stdscr):
-    main_menu(stdscr);
+def init_pyther(stdscr):
+    height, width = stdscr.getmaxyx()
     player_input = 0
     cursor_x = 0
     cursor_y = 0
 
     stdscr.clear()
     stdscr.refresh()
+
+    words = open("./word_lists/200.txt").read().split("\n");
 
     # Start colors in curses
     curses.start_color()
@@ -66,7 +69,15 @@ def draw_menu(stdscr):
         # Initialization
         stdscr.clear()
         stdscr.border()
-        height, width = stdscr.getmaxyx()
+
+        for n in range(80):
+            stdscr.addstr(int(height / 3 - 5), int(width / 3 + n), "-") #(curses.ACS_HLINE)
+            stdscr.addstr(int(height / 3 - 1), int(width / 3 + n), "-")
+
+        n = 0;
+        for word in words[:10]:
+            n += 1;
+            stdscr.addstr(int(height / 3 - 4), int(width / 3 + n), word + " ")
 
         if player_input == curses.KEY_DOWN:
             cursor_y = cursor_y + 1
@@ -83,39 +94,12 @@ def draw_menu(stdscr):
         cursor_y = max(0, cursor_y)
         cursor_y = min(height-1, cursor_y)
 
-        # Declaration of strings
-        title = "Welcome to Pyther"[:width-1]
-        subtitle = "Select mode"[:width-1]
-        mode = "Last key pressed: {}".format(player_input)[:width-1]
-        if player_input == 0:
-            keystr = "No key press detected..."[:width-1]
-
         # Centering title screen
-        start_x_title = int((width // 2) - (len(title) // 2) - len(title) % 2)
-        start_x_subtitle = int((width // 2) - (len(subtitle) // 2) - len(subtitle) % 2)
-        start_x_keystr = int((width // 2) - (len(keystr) // 2) - len(keystr) % 2)
-        start_y = int((height // 2) - 2)
+        #start_x_title = int((width // 2) - (len(title) // 2) - len(title) % 2)
+        #start_x_subtitle = int((width // 2) - (len(subtitle) // 2) - len(subtitle) % 2)
+        #start_x_keystr = int((width // 2) - (len(keystr) // 2) - len(keystr) % 2)
+        #start_y = int((height // 2) - 2)
 
-        # Rendering some text
-        whstr = "Width: {}, Height: {}".format(width, height)
-        stdscr.addstr(0, 0, whstr, curses.color_pair(1))
-
-        # Turning on attributes for title
-        stdscr.attron(curses.color_pair(2))
-        stdscr.attron(curses.A_BOLD)
-
-        # Rendering title
-        stdscr.addstr(start_y, start_x_title, title)
-
-        # Turning off attributes for title
-        stdscr.attroff(curses.color_pair(2))
-        stdscr.attroff(curses.A_BOLD)
-
-        # Print rest of text
-        stdscr.addstr(start_y, start_x_title, title, curses.color_pair(2))
-        stdscr.addstr(start_y + 1, start_x_subtitle, subtitle)
-        stdscr.addstr(start_y + 3, (width // 2) - 2, '-' * 4)
-        stdscr.addstr(start_y + 5, start_x_keystr, keystr)
         stdscr.move(cursor_y, cursor_x)
 
         # Refresh the screen
@@ -124,11 +108,8 @@ def draw_menu(stdscr):
         # Wait for next input
         player_input = stdscr.getch()
 
-def main():
-    curses.wrapper(draw_menu)
-
 if __name__ == "__main__":
-    main()
+    curses.wrapper(main_menu)
 
 #def calc_words_score():
 
