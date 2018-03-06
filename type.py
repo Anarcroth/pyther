@@ -47,7 +47,7 @@ def main_menu(stdscr):
 
 def player_input(stdscr, y, x):
     curses.echo()
-    input = stdscr.getstr(y + 1, x, 20)
+    input = stdscr.getstr(y, x, 20)
     return input
 
 def paint_main_panel(stdscr, main_panel_y, main_panel_x, words):
@@ -63,25 +63,16 @@ def paint_main_panel(stdscr, main_panel_y, main_panel_x, words):
     stdscr.addstr(main_panel_y - 3, main_panel_x * 2 - 1, "|")
     stdscr.addstr(main_panel_y - 2, main_panel_x * 2 - 1, "|")
 
-    # TODO optimize selection of words and outputting them to the screen
-    # TODO randomize list from the beginning and just iterate over the 3 lines
-    prev_pos_x1, prev_pos_x2, prev_pos_x3 = 0, 0, 0;
+    n = 4;
+    prev_pos_x = 0
     for word in words:
-        rand_word1 = random.choice(words)
-        rand_word2 = random.choice(words)
-        rand_word3 = random.choice(words)
-        if main_panel_x + prev_pos_x1 + len(rand_word1) > main_panel_x * 2 - 2:
-            break;
-        if main_panel_x + prev_pos_x2 + len(rand_word2) > main_panel_x * 2 - 2:
-            break;
-        if main_panel_x + prev_pos_x3 + len(rand_word3) > main_panel_x * 2 - 2:
-            break;
-        stdscr.addstr(main_panel_y - 4, main_panel_x + prev_pos_x1 + 1, rand_word1)
-        stdscr.addstr(main_panel_y - 3, main_panel_x + prev_pos_x2 + 1, rand_word2)
-        stdscr.addstr(main_panel_y - 2, main_panel_x + prev_pos_x3 + 1, rand_word3)
-        prev_pos_x1 += len(rand_word1 + " ")
-        prev_pos_x2 += len(rand_word2 + " ")
-        prev_pos_x3 += len(rand_word3 + " ")
+        if main_panel_x + prev_pos_x + len(word) > main_panel_x * 2 - 2:
+            n -= 1
+            prev_pos_x = 0
+        if n < 2:
+            break
+        stdscr.addstr(main_panel_y - n, main_panel_x + prev_pos_x + 1, word)
+        prev_pos_x += len(word + " ")
 
 def init_pyther(stdscr):
     height, width = stdscr.getmaxyx()
@@ -93,7 +84,8 @@ def init_pyther(stdscr):
     stdscr.clear()
     stdscr.refresh()
 
-    words = open("./word_lists/200.txt").read().split("\n");
+    words = open("./word_lists/200.txt").read().split("\n")
+    random.shuffle(words)
 
     # Start colors in curses
     curses.start_color()
