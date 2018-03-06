@@ -77,7 +77,6 @@ def init_pyther(stdscr):
         stdscr.addstr("width: " + str(width))
 
         for n in range(main_panel_x):
-            # TODO make screen proportions dynamic to the currently opened screen
             stdscr.addstr(main_panel_y - 5, main_panel_x + n, "-") # TODO use -> (curses.ACS_HLINE)
             stdscr.addstr(main_panel_y - 1, main_panel_x + n, "-")
 
@@ -89,12 +88,24 @@ def init_pyther(stdscr):
         stdscr.addstr(main_panel_y - 3, main_panel_x * 2 - 1, "|")
         stdscr.addstr(main_panel_y - 2, main_panel_x * 2 - 1, "|")
 
-        # TODO add random selection of words
-        prev_pos_x = 0;
-        for word in words[0:20]:
-            rand_word = random.choice(words)
-            #stdscr.addstr(int(height / 3 - 4), int(width / 3 + prev_pos_x + 1), rand_word)
-            prev_pos_x += len(rand_word + " ")
+        # TODO optimize selection of words and outputting them to the screen
+        prev_pos_x1, prev_pos_x2, prev_pos_x3 = 0, 0, 0;
+        for word in words:
+            rand_word1 = random.choice(words)
+            rand_word2 = random.choice(words)
+            rand_word3 = random.choice(words)
+            if main_panel_x + prev_pos_x1 + len(rand_word1) > main_panel_x * 2 - 2:
+                break;
+            if main_panel_x + prev_pos_x2 + len(rand_word2) > main_panel_x * 2 - 2:
+                break;
+            if main_panel_x + prev_pos_x3 + len(rand_word3) > main_panel_x * 2 - 2:
+                break;
+            stdscr.addstr(main_panel_y - 4, main_panel_x + prev_pos_x1 + 1, rand_word1)
+            stdscr.addstr(main_panel_y - 3, main_panel_x + prev_pos_x2 + 1, rand_word2)
+            stdscr.addstr(main_panel_y - 2, main_panel_x + prev_pos_x3 + 1, rand_word3)
+            prev_pos_x1 += len(rand_word1 + " ")
+            prev_pos_x2 += len(rand_word2 + " ")
+            prev_pos_x3 += len(rand_word3 + " ")
 
 
         if player_input == curses.KEY_DOWN:
