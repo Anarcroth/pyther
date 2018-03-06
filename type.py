@@ -48,7 +48,9 @@ def main_menu(stdscr):
 
 def init_pyther(stdscr):
     height, width = stdscr.getmaxyx()
-    max_main_panel_y, max_main_panel_x = int(height / 3 - 5), int(width / 3);
+
+    main_panel_y, main_panel_x = int(height / 3), int(width / 3)
+
     player_input = 0
     cursor_x = 0
     cursor_y = 0
@@ -71,17 +73,28 @@ def init_pyther(stdscr):
         stdscr.clear()
         stdscr.border()
 
-        for n in range(80):
-            stdscr.addstr(int(height / 3 - 5), int(width / 3 + n), "-") # TODO use -> (curses.ACS_HLINE)
-            stdscr.addstr(int(height / 3 - 1), int(width / 3 + n), "-")
+        stdscr.addstr("height: " + str(height))
+        stdscr.addstr("width: " + str(width))
 
-        # TODO add side borders
+        for n in range(main_panel_x):
+            # TODO make screen proportions dynamic to the currently opened screen
+            stdscr.addstr(main_panel_y - 5, main_panel_x + n, "-") # TODO use -> (curses.ACS_HLINE)
+            stdscr.addstr(main_panel_y - 1, main_panel_x + n, "-")
+
+        # Add side borders
+        stdscr.addstr(main_panel_y - 4, main_panel_x, "|")
+        stdscr.addstr(main_panel_y - 3, main_panel_x, "|")
+        stdscr.addstr(main_panel_y - 2, main_panel_x, "|")
+        stdscr.addstr(main_panel_y - 4, main_panel_x * 2 - 1, "|")
+        stdscr.addstr(main_panel_y - 3, main_panel_x * 2 - 1, "|")
+        stdscr.addstr(main_panel_y - 2, main_panel_x * 2 - 1, "|")
 
         # TODO add random selection of words
         prev_pos_x = 0;
         for word in words[0:20]:
-            stdscr.addstr(int(height / 3 - 4), int(width / 3 + prev_pos_x + 1), word)
-            prev_pos_x += len(word + " ")
+            rand_word = random.choice(words)
+            #stdscr.addstr(int(height / 3 - 4), int(width / 3 + prev_pos_x + 1), rand_word)
+            prev_pos_x += len(rand_word + " ")
 
 
         if player_input == curses.KEY_DOWN:
