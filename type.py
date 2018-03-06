@@ -45,15 +45,50 @@ def main_menu(stdscr):
         elif selection == 3:
             sys.exit();
 
+def player_input(stdscr, y, x):
+    curses.echo()
+    input = stdscr.getstr(y + 1, x, 20)
+    return input
+
+def paint_main_panel(stdscr, main_panel_y, main_panel_x, words):
+    for n in range(main_panel_x):
+        stdscr.addstr(main_panel_y - 5, main_panel_x + n, "-") # TODO use -> (curses.ACS_HLINE)
+        stdscr.addstr(main_panel_y - 1, main_panel_x + n, "-")
+
+    # Add side borders
+    stdscr.addstr(main_panel_y - 4, main_panel_x, "|")
+    stdscr.addstr(main_panel_y - 3, main_panel_x, "|")
+    stdscr.addstr(main_panel_y - 2, main_panel_x, "|")
+    stdscr.addstr(main_panel_y - 4, main_panel_x * 2 - 1, "|")
+    stdscr.addstr(main_panel_y - 3, main_panel_x * 2 - 1, "|")
+    stdscr.addstr(main_panel_y - 2, main_panel_x * 2 - 1, "|")
+
+    # TODO optimize selection of words and outputting them to the screen
+    # TODO randomize list from the beginning and just iterate over the 3 lines
+    prev_pos_x1, prev_pos_x2, prev_pos_x3 = 0, 0, 0;
+    for word in words:
+        rand_word1 = random.choice(words)
+        rand_word2 = random.choice(words)
+        rand_word3 = random.choice(words)
+        if main_panel_x + prev_pos_x1 + len(rand_word1) > main_panel_x * 2 - 2:
+            break;
+        if main_panel_x + prev_pos_x2 + len(rand_word2) > main_panel_x * 2 - 2:
+            break;
+        if main_panel_x + prev_pos_x3 + len(rand_word3) > main_panel_x * 2 - 2:
+            break;
+        stdscr.addstr(main_panel_y - 4, main_panel_x + prev_pos_x1 + 1, rand_word1)
+        stdscr.addstr(main_panel_y - 3, main_panel_x + prev_pos_x2 + 1, rand_word2)
+        stdscr.addstr(main_panel_y - 2, main_panel_x + prev_pos_x3 + 1, rand_word3)
+        prev_pos_x1 += len(rand_word1 + " ")
+        prev_pos_x2 += len(rand_word2 + " ")
+        prev_pos_x3 += len(rand_word3 + " ")
 
 def init_pyther(stdscr):
     height, width = stdscr.getmaxyx()
 
     main_panel_y, main_panel_x = int(height / 3), int(width / 3)
 
-    player_input = 0
-    cursor_x = 0
-    cursor_y = 0
+    player_str = 0
 
     stdscr.clear()
     stdscr.refresh()
@@ -66,8 +101,7 @@ def init_pyther(stdscr):
     curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
     curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_WHITE)
 
-    # Loop where k is the last character pressed
-    while (player_input != ord('q')):
+    while (player_str != "q"):
 
         # Initialization
         stdscr.clear()
@@ -76,66 +110,13 @@ def init_pyther(stdscr):
         stdscr.addstr("height: " + str(height))
         stdscr.addstr("width: " + str(width))
 
-        for n in range(main_panel_x):
-            stdscr.addstr(main_panel_y - 5, main_panel_x + n, "-") # TODO use -> (curses.ACS_HLINE)
-            stdscr.addstr(main_panel_y - 1, main_panel_x + n, "-")
+        paint_main_panel(stdscr, main_panel_y, main_panel_x, words)
 
-        # Add side borders
-        stdscr.addstr(main_panel_y - 4, main_panel_x, "|")
-        stdscr.addstr(main_panel_y - 3, main_panel_x, "|")
-        stdscr.addstr(main_panel_y - 2, main_panel_x, "|")
-        stdscr.addstr(main_panel_y - 4, main_panel_x * 2 - 1, "|")
-        stdscr.addstr(main_panel_y - 3, main_panel_x * 2 - 1, "|")
-        stdscr.addstr(main_panel_y - 2, main_panel_x * 2 - 1, "|")
-
-        # TODO optimize selection of words and outputting them to the screen
-        prev_pos_x1, prev_pos_x2, prev_pos_x3 = 0, 0, 0;
-        for word in words:
-            rand_word1 = random.choice(words)
-            rand_word2 = random.choice(words)
-            rand_word3 = random.choice(words)
-            if main_panel_x + prev_pos_x1 + len(rand_word1) > main_panel_x * 2 - 2:
-                break;
-            if main_panel_x + prev_pos_x2 + len(rand_word2) > main_panel_x * 2 - 2:
-                break;
-            if main_panel_x + prev_pos_x3 + len(rand_word3) > main_panel_x * 2 - 2:
-                break;
-            stdscr.addstr(main_panel_y - 4, main_panel_x + prev_pos_x1 + 1, rand_word1)
-            stdscr.addstr(main_panel_y - 3, main_panel_x + prev_pos_x2 + 1, rand_word2)
-            stdscr.addstr(main_panel_y - 2, main_panel_x + prev_pos_x3 + 1, rand_word3)
-            prev_pos_x1 += len(rand_word1 + " ")
-            prev_pos_x2 += len(rand_word2 + " ")
-            prev_pos_x3 += len(rand_word3 + " ")
-
-
-        if player_input == curses.KEY_DOWN:
-            cursor_y = cursor_y + 1
-        elif player_input == curses.KEY_UP:
-            cursor_y = cursor_y - 1
-        elif player_input == curses.KEY_RIGHT:
-            cursor_x = cursor_x + 1
-        elif player_input == curses.KEY_LEFT:
-            cursor_x = cursor_x - 1
-
-        cursor_x = max(0, cursor_x)
-        cursor_x = min(width-1, cursor_x)
-
-        cursor_y = max(0, cursor_y)
-        cursor_y = min(height-1, cursor_y)
-
-        # Centering title screen
-        #start_x_title = int((width // 2) - (len(title) // 2) - len(title) % 2)
-        #start_x_subtitle = int((width // 2) - (len(subtitle) // 2) - len(subtitle) % 2)
-        #start_x_keystr = int((width // 2) - (len(keystr) // 2) - len(keystr) % 2)
-        #start_y = int((height // 2) - 2)
-
-        stdscr.move(cursor_y, cursor_x)
+        # Wait for next input
+        player_str = player_input(stdscr, 1, 0)
 
         # Refresh the screen
         stdscr.refresh()
-
-        # Wait for next input
-        player_input = stdscr.getch()
 
 if __name__ == "__main__":
     curses.wrapper(main_menu)
