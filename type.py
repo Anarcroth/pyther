@@ -86,14 +86,22 @@ def paint_input_panel(stdscr, input_panel_y, input_panel_x_lf, input_panel_x_ri)
     stdscr.addstr(input_panel_y + 1, input_panel_x_lf, "|")
     stdscr.addstr(input_panel_y + 1, input_panel_x_ri , "|")
 
+def is_pl_correct(pl_str, words):
+    if len(pl_str) == len(words[0]):
+        del words[0]
+
 def init_pyther(stdscr):
     height, width = stdscr.getmaxyx()
 
     main_panel_y, main_panel_x = int(height / 3), int(width / 3)
-    input_panel_y = int(main_panel_y)
-    input_panel_x_lf, input_panel_x_ri = int(main_panel_x + main_panel_x / 4), int(main_panel_x * 2 - main_panel_x / 4)
 
-    player_str = 0
+    input_panel_y = int(main_panel_y)
+    input_panel_x_lf = int(main_panel_x + main_panel_x / 4)
+    input_panel_x_ri = int(main_panel_x * 2 - main_panel_x / 4)
+
+    pl_input_y, pl_input_x = input_panel_y + 1, input_panel_x_lf + 1
+
+    pl_str = ""
 
     stdscr.clear()
     stdscr.refresh()
@@ -107,13 +115,13 @@ def init_pyther(stdscr):
     curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
     curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_WHITE)
 
-    while (player_str != "q"):
+    while (pl_str != "q"):
 
         # Initialization
         stdscr.clear()
         stdscr.border()
 
-        stdscr.addstr("height: " + str(height))
+        stdscr.addstr("height: " + str(len(words)))
         stdscr.addstr("width: " + str(width))
 
         paint_main_panel(stdscr, main_panel_y, main_panel_x)
@@ -121,18 +129,14 @@ def init_pyther(stdscr):
 
         put_words(stdscr, main_panel_y, main_panel_x, words)
 
-        # Wait for next input
-        player_str = player_input(stdscr, 1, 0)
-
-        stdscr.addstr(10, 10, player_str)
+        pl_str = player_input(stdscr, pl_input_y, pl_input_x)
+        is_pl_correct(pl_str, words)
 
         # Refresh the screen
         stdscr.refresh()
 
 if __name__ == "__main__":
     curses.wrapper(main_menu)
-
-#def calc_words_score():
 
 #def is_correct():
 
