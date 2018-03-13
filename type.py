@@ -65,7 +65,7 @@ def put_words(stdscr, main_panel_y, main_panel_x, words):
 def paint_main_panel(stdscr, main_panel_y, main_panel_x):
     # Add top and bottom borders
     for n in range(main_panel_x):
-        stdscr.addstr(main_panel_y - 5, main_panel_x + n, "-") # TODO use -> (curses.ACS_HLINE)
+        stdscr.addstr(main_panel_y - 5, main_panel_x + n, "-") # TODO use -> (curses.ACS_HELENE)
         stdscr.addstr(main_panel_y - 1, main_panel_x + n, "-")
 
     # Add side borders
@@ -76,10 +76,22 @@ def paint_main_panel(stdscr, main_panel_y, main_panel_x):
     stdscr.addstr(main_panel_y - 3, main_panel_x * 2 - 1, "|")
     stdscr.addstr(main_panel_y - 2, main_panel_x * 2 - 1, "|")
 
+def paint_input_panel(stdscr, input_panel_y, input_panel_x_lf, input_panel_x_ri):
+    # Add top and bottom borders
+    for n in range(input_panel_x_ri - input_panel_x_lf + 1):
+        stdscr.addstr(input_panel_y, input_panel_x_lf + n, "-")
+        stdscr.addstr(input_panel_y + 2, input_panel_x_lf + n, "-")
+
+    # Add side borders
+    stdscr.addstr(input_panel_y + 1, input_panel_x_lf, "|")
+    stdscr.addstr(input_panel_y + 1, input_panel_x_ri , "|")
+
 def init_pyther(stdscr):
     height, width = stdscr.getmaxyx()
 
     main_panel_y, main_panel_x = int(height / 3), int(width / 3)
+    input_panel_y = int(main_panel_y)
+    input_panel_x_lf, input_panel_x_ri = int(main_panel_x + main_panel_x / 4), int(main_panel_x * 2 - main_panel_x / 4)
 
     player_str = 0
 
@@ -105,6 +117,7 @@ def init_pyther(stdscr):
         stdscr.addstr("width: " + str(width))
 
         paint_main_panel(stdscr, main_panel_y, main_panel_x)
+        paint_input_panel(stdscr, input_panel_y, input_panel_x_lf, input_panel_x_ri)
 
         put_words(stdscr, main_panel_y, main_panel_x, words)
 
