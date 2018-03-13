@@ -50,7 +50,20 @@ def player_input(stdscr, y, x):
     input = stdscr.getstr(y, x, 20)
     return input
 
-def paint_main_panel(stdscr, main_panel_y, main_panel_x, words):
+def put_words(stdscr, main_panel_y, main_panel_x, words):
+    n = 4;
+    prev_pos_x = 0
+    for word in words:
+        if main_panel_x + prev_pos_x + len(word) > main_panel_x * 2 - 2:
+            n -= 1
+            prev_pos_x = 0
+        if n < 2:
+            break
+        stdscr.addstr(main_panel_y - n, main_panel_x + prev_pos_x + 1, word)
+        prev_pos_x += len(word + " ")
+
+def paint_main_panel(stdscr, main_panel_y, main_panel_x):
+    # Add top and bottom borders
     for n in range(main_panel_x):
         stdscr.addstr(main_panel_y - 5, main_panel_x + n, "-") # TODO use -> (curses.ACS_HLINE)
         stdscr.addstr(main_panel_y - 1, main_panel_x + n, "-")
@@ -62,17 +75,6 @@ def paint_main_panel(stdscr, main_panel_y, main_panel_x, words):
     stdscr.addstr(main_panel_y - 4, main_panel_x * 2 - 1, "|")
     stdscr.addstr(main_panel_y - 3, main_panel_x * 2 - 1, "|")
     stdscr.addstr(main_panel_y - 2, main_panel_x * 2 - 1, "|")
-
-    n = 4;
-    prev_pos_x = 0
-    for word in words:
-        if main_panel_x + prev_pos_x + len(word) > main_panel_x * 2 - 2:
-            n -= 1
-            prev_pos_x = 0
-        if n < 2:
-            break
-        stdscr.addstr(main_panel_y - n, main_panel_x + prev_pos_x + 1, word)
-        prev_pos_x += len(word + " ")
 
 def init_pyther(stdscr):
     height, width = stdscr.getmaxyx()
@@ -102,10 +104,14 @@ def init_pyther(stdscr):
         stdscr.addstr("height: " + str(height))
         stdscr.addstr("width: " + str(width))
 
-        paint_main_panel(stdscr, main_panel_y, main_panel_x, words)
+        paint_main_panel(stdscr, main_panel_y, main_panel_x)
+
+        put_words(stdscr, main_panel_y, main_panel_x, words)
 
         # Wait for next input
         player_str = player_input(stdscr, 1, 0)
+
+        stdscr.addstr(10, 10, player_str)
 
         # Refresh the screen
         stdscr.refresh()
