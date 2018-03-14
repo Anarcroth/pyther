@@ -6,6 +6,9 @@ import curses
 import random
 import time
 
+words = 0
+errors = 0
+
 def main_menu(stdscr):
     stdscr.nodelay(0);
     stdscr.clear();
@@ -47,8 +50,10 @@ def main_menu(stdscr):
 
 def player_input(stdscr, y, x):
     curses.echo()
-    input = stdscr.getstr(y, x, 20)
-    return input
+    # I am at this stage of my programming life where I hate encodings
+    #                          Fuck this thing \/
+    str_in = stdscr.getstr(y, x, 20).decode(encoding="utf-8")
+    return str_in
 
 def put_words(stdscr, main_panel_y, main_panel_x, words):
     n = 4;
@@ -87,8 +92,12 @@ def paint_input_panel(stdscr, input_panel_y, input_panel_x_lf, input_panel_x_ri)
     stdscr.addstr(input_panel_y + 1, input_panel_x_ri , "|")
 
 def is_pl_correct(pl_str, words):
-    if len(pl_str) == len(words[0]):
+    if pl_str == words[0]:
+        words += len(words[0])
         del words[0]
+
+def net_wpm():
+    return (words / 5 + errors) / time
 
 def init_pyther(stdscr):
     height, width = stdscr.getmaxyx()
@@ -137,7 +146,5 @@ def init_pyther(stdscr):
 
 if __name__ == "__main__":
     curses.wrapper(main_menu)
-
-#def is_correct():
 
 #def print_text():
