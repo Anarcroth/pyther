@@ -5,7 +5,7 @@ import sys,os
 import curses
 import random
 import time
-import draw
+import _draw
 
 correct_words = 0
 errors = 0
@@ -60,10 +60,10 @@ def init_pyther(stdscr):
         stdscr.addstr("height: " + str(len(randomized_words)))
         stdscr.addstr("width: " + str(width))
 
-        draw._main_panel(stdscr, main_panel_y, main_panel_x)
-        draw._input_panel(stdscr, input_panel_y, input_panel_x_lf, input_panel_x_ri)
+        _draw._main_panel(stdscr, main_panel_y, main_panel_x)
+        _draw._input_panel(stdscr, input_panel_y, input_panel_x_lf, input_panel_x_ri)
 
-        draw._words(stdscr, main_panel_y, main_panel_x, randomized_words)
+        _draw._words(stdscr, main_panel_y, main_panel_x, randomized_words)
 
         pl_str = player_input(stdscr, pl_input_y, pl_input_x)
         is_pl_correct(pl_str, randomized_words)
@@ -72,4 +72,4 @@ def init_pyther(stdscr):
         stdscr.refresh()
 
 if __name__ == "__main__":
-    curses.wrapper(draw._main_menu)
+    curses.wrapper(_draw._main_menu)

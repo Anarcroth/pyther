@@ -1,7 +1,7 @@
 #!bin/python3
 
 import curses
-import type as _type
+import _type
 
 def _main_menu(stdscr):
     stdscr.nodelay(0);
