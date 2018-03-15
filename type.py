@@ -6,7 +6,7 @@ import curses
 import random
 import time
 
-words = 0
+correct_words = 0
 errors = 0
 
 def main_menu(stdscr):
@@ -18,7 +18,7 @@ def main_menu(stdscr):
     option = 0;
     selection = -1;
     while selection < 0:
-        graphics = [0]*4;
+        graphics = [0] * 4;
         graphics[option] = curses.A_REVERSE;
 
         stdscr.addstr(int(height / 2 - 5), int(width / 2 - 8), "Welcome to Pyther");
@@ -56,21 +56,28 @@ def player_input(stdscr, y, x):
     return str_in
 
 def put_words(stdscr, main_panel_y, main_panel_x, words):
-    n = 4;
+    cur_word = 0
+    lines = 4
     prev_pos_x = 0
     for word in words:
         if main_panel_x + prev_pos_x + len(word) > main_panel_x * 2 - 2:
-            n -= 1
+            lines -= 1
             prev_pos_x = 0
-        if n < 2:
+        if lines < 2:
             break
-        stdscr.addstr(main_panel_y - n, main_panel_x + prev_pos_x + 1, word)
+        if words[word] == True:
+            stdscr.addstr(main_panel_y - lines, main_panel_x + prev_pos_x + 1, word, curses.color_pair(1))
+        elif cur_word == 1:
+            stdscr.addstr(main_panel_y - lines, main_panel_x + prev_pos_x + 1, word)
+        else:
+            stdscr.addstr(main_panel_y - lines, main_panel_x + prev_pos_x + 1, word, curses.A_BOLD)
+            cur_word = 1
         prev_pos_x += len(word + " ")
 
 def paint_main_panel(stdscr, main_panel_y, main_panel_x):
     # Add top and bottom borders
     for n in range(main_panel_x):
-        stdscr.addstr(main_panel_y - 5, main_panel_x + n, "-") # TODO use -> (curses.ACS_HELENE)
+        stdscr.addstr(main_panel_y - 5, main_panel_x + n, "-") # TODO use -> (curses.ACS_HLINE)
         stdscr.addstr(main_panel_y - 1, main_panel_x + n, "-")
 
     # Add side borders
@@ -92,12 +99,15 @@ def paint_input_panel(stdscr, input_panel_y, input_panel_x_lf, input_panel_x_ri)
     stdscr.addstr(input_panel_y + 1, input_panel_x_ri , "|")
 
 def is_pl_correct(pl_str, words):
-    if pl_str == words[0]:
-        words += len(words[0])
-        del words[0]
+    if pl_str in words: words[pl_str] = True
 
 def net_wpm():
-    return (words / 5 + errors) / time
+    return (correcrt_words / 5 + errors) / time
+
+def get_words_from(_file):
+    words = open(_file).read().split("\n")
+    random.shuffle(words)
+    return { w : False for w in words }
 
 def init_pyther(stdscr):
     height, width = stdscr.getmaxyx()
@@ -115,36 +125,32 @@ def init_pyther(stdscr):
     stdscr.clear()
     stdscr.refresh()
 
-    words = open("./word_lists/200.txt").read().split("\n")
-    random.shuffle(words)
+    randomized_words = get_words_from("./word_lists/200.txt")
 
     # Start colors in curses
     curses.start_color()
-    curses.init_pair(1, curses.COLOR_CYAN, curses.COLOR_BLACK)
+    curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
-    curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_WHITE)
 
-    while (pl_str != "q"):
+    while True:
 
         # Initialization
         stdscr.clear()
         stdscr.border()
 
-        stdscr.addstr("height: " + str(len(words)))
+        stdscr.addstr("height: " + str(len(randomized_words)))
         stdscr.addstr("width: " + str(width))
 
         paint_main_panel(stdscr, main_panel_y, main_panel_x)
         paint_input_panel(stdscr, input_panel_y, input_panel_x_lf, input_panel_x_ri)
 
-        put_words(stdscr, main_panel_y, main_panel_x, words)
+        put_words(stdscr, main_panel_y, main_panel_x, randomized_words)
 
         pl_str = player_input(stdscr, pl_input_y, pl_input_x)
-        is_pl_correct(pl_str, words)
+        is_pl_correct(pl_str, randomized_words)
 
         # Refresh the screen
         stdscr.refresh()
 
 if __name__ == "__main__":
     curses.wrapper(main_menu)
-
-#def print_text():
