@@ -43,12 +43,10 @@ def _main_menu(stdscr):
             sys.exit();
 
 def _main_panel(stdscr, main_panel_y, main_panel_x):
-    # Add top and bottom borders
     for n in range(main_panel_x):
         stdscr.addstr(main_panel_y - 5, main_panel_x + n, "-") # TODO use -> (curses.ACS_HLINE)
         stdscr.addstr(main_panel_y - 1, main_panel_x + n, "-")
 
-    # Add side borders
     stdscr.addstr(main_panel_y - 4, main_panel_x, "|")
     stdscr.addstr(main_panel_y - 3, main_panel_x, "|")
     stdscr.addstr(main_panel_y - 2, main_panel_x, "|")
@@ -57,17 +55,15 @@ def _main_panel(stdscr, main_panel_y, main_panel_x):
     stdscr.addstr(main_panel_y - 2, main_panel_x * 2 - 1, "|")
 
 def _input_panel(stdscr, input_panel_y, input_panel_x_lf, input_panel_x_ri):
-    # Add top and bottom borders
     for n in range(input_panel_x_ri - input_panel_x_lf + 1):
         stdscr.addstr(input_panel_y, input_panel_x_lf + n, "-")
         stdscr.addstr(input_panel_y + 2, input_panel_x_lf + n, "-")
 
-    # Add side borders
     stdscr.addstr(input_panel_y + 1, input_panel_x_lf, "|")
     stdscr.addstr(input_panel_y + 1, input_panel_x_ri , "|")
 
 def _words(stdscr, main_panel_y, main_panel_x, words):
-    cur_word = 0
+    current_word = True
     lines = 4
     prev_pos_x = 0
     for word in words:
@@ -78,9 +74,9 @@ def _words(stdscr, main_panel_y, main_panel_x, words):
             break
         if words[word] == True:
             stdscr.addstr(main_panel_y - lines, main_panel_x + prev_pos_x + 1, word, curses.color_pair(1))
-        elif cur_word == 1:
+        elif not current_word:
             stdscr.addstr(main_panel_y - lines, main_panel_x + prev_pos_x + 1, word)
         else:
             stdscr.addstr(main_panel_y - lines, main_panel_x + prev_pos_x + 1, word, curses.A_BOLD)
-            cur_word = 1
+            current_word = False
         prev_pos_x += len(word + " ")
