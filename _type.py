@@ -9,12 +9,18 @@ import _draw
 
 correct_words = 0
 errors = 0
-
+n = 0
 def player_input(stdscr, y, x):
     curses.echo()
-    # I am at this stage of my programming life where I hate encodings
-    #                          Fuck this thing \/
-    str_in = stdscr.getstr(y, x, 20).decode(encoding="utf-8")
+    str_in = ''
+    global n
+    while True:
+        _input = stdscr.getch(y, x)
+        n += 1
+        if _input == 32:
+            break
+        str_in += chr(_input)
+
     return str_in
 
 def is_pl_correct(pl_str, words):
@@ -41,6 +47,7 @@ def init_pyther(stdscr):
 
     pl_str = ""
 
+    #stdscr.nodelay(True)
     stdscr.clear()
     stdscr.refresh()
 
@@ -58,7 +65,7 @@ def init_pyther(stdscr):
         stdscr.border()
 
         stdscr.addstr("height: " + str(len(randomized_words)))
-        stdscr.addstr("width: " + str(width))
+        stdscr.addstr("width: " + str(n))
 
         _draw._main_panel(stdscr, main_panel_y, main_panel_x)
         _draw._input_panel(stdscr, input_panel_y, input_panel_x_lf, input_panel_x_ri)
