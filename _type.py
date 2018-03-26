@@ -9,17 +9,26 @@ import _draw
 
 correct_words = 0
 errors = 0
-n = 0
+num_key_presses = 0
+
 def player_input(stdscr, y, x):
     curses.echo()
     str_in = ''
-    global n
+    global num_key_presses
+
     while True:
-        _input = stdscr.getch(y, x)
-        n += 1
-        if _input == 32:
+        _input = stdscr.getch(y, x + len(str_in))
+        if _input == 32: # SPACE
             break
-        str_in += chr(_input)
+        elif _input == 263: # BACKSPACE
+            stdscr.addstr(y, x + len(str_in) - 1, ' ')
+            str_in = str_in[:-1]
+            num_key_presses += 1
+        elif _input == 269: # F5
+            init_pyther(stdscr)
+        else:
+            str_in += chr(_input)
+            num_key_presses += 1
 
     return str_in
 
@@ -47,7 +56,6 @@ def init_pyther(stdscr):
 
     pl_str = ""
 
-    #stdscr.nodelay(True)
     stdscr.clear()
     stdscr.refresh()
 
@@ -65,7 +73,7 @@ def init_pyther(stdscr):
         stdscr.border()
 
         stdscr.addstr("height: " + str(len(randomized_words)))
-        stdscr.addstr("width: " + str(n))
+        stdscr.addstr("width: " + str(num_key_presses))
 
         _draw._main_panel(stdscr, main_panel_y, main_panel_x)
         _draw._input_panel(stdscr, input_panel_y, input_panel_x_lf, input_panel_x_ri)
