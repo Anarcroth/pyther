@@ -66,8 +66,10 @@ def _words(stdscr, main_panel_y, main_panel_x, words):
     current_word = True
     lines = 4
     prev_pos_x = 0
+    max_panel_len = main_panel_x * 2 - 2
+    prev_pos_x = 0
     for word in words:
-        if main_panel_x + prev_pos_x + len(word) > main_panel_x * 2 - 2:
+        if main_panel_x + prev_pos_x + len(word) > max_panel_len:
             lines -= 1
             prev_pos_x = 0
         if lines < 2:
@@ -82,3 +84,24 @@ def _words(stdscr, main_panel_y, main_panel_x, words):
             stdscr.addstr(main_panel_y - lines, main_panel_x + prev_pos_x + 1, word, curses.A_BOLD)
             current_word = False
         prev_pos_x += len(word + " ")
+
+def check_first_line(words, main_panel_x):
+    prev_pos_x = 0
+    past_words = []
+    line_one_len = 0
+    line_complete = False
+    max_panel_len = main_panel_x * 2 - 2
+    for word in words:
+        line_one_len += 1
+        if words[word] != None:
+            past_words.append(word)
+        if main_panel_x + prev_pos_x + len(word) > max_panel_len and line_one_len == len(past_words) + 1:
+            line_complete = True
+            break
+        prev_pos_x += len(word + " ")
+
+    if line_complete:
+        for wo in past_words:
+            del words[wo]
+        return True
+    return False

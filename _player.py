@@ -26,7 +26,16 @@ class Player(object):
                 str_in += chr(_input)
                 self.num_key_presses += 1
 
-                return str_in
+        return str_in
 
     def _get_net_wpm():
         return (self.correcrt_words / 5 + self.errors) #/ time
+
+    def is_correct(self, pl_str, words, word_counter):
+        current_word = list(words.keys())[word_counter]
+        if current_word == pl_str:
+            words[pl_str] = True
+            self.correct_words += 1
+        else:
+            words[current_word] = False
+            self.errors += 1
