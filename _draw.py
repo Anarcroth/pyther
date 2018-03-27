@@ -74,6 +74,8 @@ def _words(stdscr, main_panel_y, main_panel_x, words):
             break
         if words[word] == True:
             stdscr.addstr(main_panel_y - lines, main_panel_x + prev_pos_x + 1, word, curses.color_pair(1))
+        elif words[word] == False:
+            stdscr.addstr(main_panel_y - lines, main_panel_x + prev_pos_x + 1, word, curses.color_pair(2))
         elif not current_word:
             stdscr.addstr(main_panel_y - lines, main_panel_x + prev_pos_x + 1, word)
         else:

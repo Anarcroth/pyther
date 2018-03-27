@@ -32,8 +32,12 @@ def player_input(stdscr, y, x):
 
     return str_in
 
-def is_pl_correct(pl_str, words):
-    if pl_str in words: words[pl_str] = True
+def is_pl_correct(pl_str, words, word_counter):
+    current_word = list(words.keys())[word_counter]
+    if current_word == pl_str:
+        words[pl_str] = True
+    else:
+        words[current_word] = False
 
 def net_wpm():
     return (correcrt_words / 5 + errors) / time
@@ -41,7 +45,7 @@ def net_wpm():
 def get_words_from(_file):
     words = open(_file).read().split("\n")
     random.shuffle(words)
-    return { w : False for w in words }
+    return { w : None for w in words }
 
 def init_pyther(stdscr):
     height, width = stdscr.getmaxyx()
@@ -59,6 +63,7 @@ def init_pyther(stdscr):
     stdscr.clear()
     stdscr.refresh()
 
+    word_counter = 0
     randomized_words = get_words_from("./word_lists/200.txt")
 
     # Start colors in curses
@@ -67,12 +72,11 @@ def init_pyther(stdscr):
     curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
 
     while True:
-
         # Initialization
         stdscr.clear()
         stdscr.border()
 
-        stdscr.addstr("height: " + str(len(randomized_words)))
+        stdscr.addstr("height: " + str(word_counter))
         stdscr.addstr("width: " + str(num_key_presses))
 
         _draw._main_panel(stdscr, main_panel_y, main_panel_x)
@@ -81,7 +85,8 @@ def init_pyther(stdscr):
         _draw._words(stdscr, main_panel_y, main_panel_x, randomized_words)
 
         pl_str = player_input(stdscr, pl_input_y, pl_input_x)
-        is_pl_correct(pl_str, randomized_words)
+        is_pl_correct(pl_str, randomized_words, word_counter)
+        word_counter += 1
 
         # Refresh the screen
         stdscr.refresh()
