@@ -5,38 +5,42 @@ import sys,os
 import curses
 import random
 import time
-import _draw
+from _draw import Draw
 from _player import Player
+
+def init(stdscr):
+    draw = Draw(stdscr)
+
+    choice = draw.main_menu(stdscr)
+    if choice == 0:
+        init_pyther(stdscr, draw)
+    elif choice == 1:
+        # TODO show different modes
+        return;
+    elif choice == 2:
+        # TODO shows high scores
+        return;
+    elif choice == 3:
+        sys.exit();
 
 def get_words_from(_file):
     words = open(_file).read().split("\n")
     random.shuffle(words)
     return { w : None for w in words }
 
-def init_pyther(stdscr):
-    height, width = stdscr.getmaxyx()
-
-    main_panel_y, main_panel_x = int(height / 3), int(width / 3)
-
-    input_panel_y = int(main_panel_y)
-    input_panel_x_lf = int(main_panel_x + main_panel_x / 4)
-    input_panel_x_ri = int(main_panel_x * 2 - main_panel_x / 4)
-
-    pl_input_y, pl_input_x = input_panel_y + 1, input_panel_x_lf + 1
-
-    pl_str = ""
+def init_pyther(stdscr, draw):
 
     stdscr.clear()
     stdscr.refresh()
 
-    word_counter = 0
-    randomized_words = get_words_from("./word_lists/200.txt")
-
-    pl = Player()
-
     curses.start_color()
     curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
+
+    word_counter = 0
+    randomized_words = get_words_from("./word_lists/200.txt")
+
+    player = Player()
 
     while True:
         stdscr.clear()
@@ -45,19 +49,19 @@ def init_pyther(stdscr):
         stdscr.addstr("height: " + str(word_counter))
         stdscr.addstr("width: " + str(len(randomized_words)))
 
-        _draw._main_panel(stdscr, main_panel_y, main_panel_x)
-        _draw._input_panel(stdscr, input_panel_y, input_panel_x_lf, input_panel_x_ri)
+        draw.main_panel(stdscr)
+        draw.input_panel(stdscr)
 
-        if _draw.check_first_line(randomized_words, main_panel_x):
+        if draw.check_first_line(randomized_words):
             word_counter = 0
 
-        _draw._words(stdscr, main_panel_y, main_panel_x, randomized_words)
+        draw.words(stdscr, randomized_words)
 
-        pl_str = pl._input(stdscr, pl_input_y, pl_input_x)
-        pl.is_correct(pl_str, randomized_words, word_counter)
+        player.input(stdscr, draw.pl_input_y, draw.pl_input_x)
+        player.is_correct(randomized_words, word_counter)
         word_counter += 1
 
         stdscr.refresh()
 
 if __name__ == "__main__":
-    curses.wrapper(_draw._main_menu)
+    curses.wrapper(init)

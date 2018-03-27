@@ -1,40 +1,38 @@
 #!bin/python3
 
 import curses
-import _type
 
 class Player(object):
     def __init__(self):
         self.errors = 0
         self.correct_words = 0
         self.num_key_presses = 0
+        self.pl_str = ''
 
-    def _input(self, stdscr, y, x):
+    def input(self, stdscr, y, x):
         curses.echo()
-        str_in = ''
+        self.pl_str = ''
         while True:
-            _input = stdscr.getch(y, x + len(str_in))
+            _input = stdscr.getch(y, x + len(self.pl_str))
             if _input == 32: # SPACE
                 break
             elif _input == 263: # BACKSPACE
-                stdscr.addstr(y, x + len(str_in) - 1, ' ')
-                str_in = str_in[:-1]
+                stdscr.addstr(y, x + len(self.pl_str) - 1, ' ')
+                self.pl_str = self.pl_str[:-1]
                 self.num_key_presses += 1
             elif _input == 269: # F5
                 init_pyther(stdscr)
             else:
-                str_in += chr(_input)
+                self.pl_str += chr(_input)
                 self.num_key_presses += 1
 
-        return str_in
-
-    def _get_net_wpm():
+    def get_net_wpm():
         return (self.correcrt_words / 5 + self.errors) #/ time
 
-    def is_correct(self, pl_str, words, word_counter):
+    def is_correct(self, words, word_counter):
         current_word = list(words.keys())[word_counter]
-        if current_word == pl_str:
-            words[pl_str] = True
+        if current_word == self.pl_str:
+            words[self.pl_str] = True
             self.correct_words += 1
         else:
             words[current_word] = False
