@@ -6,31 +6,11 @@ import curses
 import random
 import time
 import _draw
+from _player import Player as _player
 
 correct_words = 0
 errors = 0
 num_key_presses = 0
-
-def player_input(stdscr, y, x):
-    curses.echo()
-    str_in = ''
-    global num_key_presses
-
-    while True:
-        _input = stdscr.getch(y, x + len(str_in))
-        if _input == 32: # SPACE
-            break
-        elif _input == 263: # BACKSPACE
-            stdscr.addstr(y, x + len(str_in) - 1, ' ')
-            str_in = str_in[:-1]
-            num_key_presses += 1
-        elif _input == 269: # F5
-            init_pyther(stdscr)
-        else:
-            str_in += chr(_input)
-            num_key_presses += 1
-
-    return str_in
 
 def is_pl_correct(pl_str, words, word_counter):
     current_word = list(words.keys())[word_counter]
@@ -39,8 +19,6 @@ def is_pl_correct(pl_str, words, word_counter):
     else:
         words[current_word] = False
 
-def net_wpm():
-    return (correcrt_words / 5 + errors) / time
 
 def get_words_from(_file):
     words = open(_file).read().split("\n")
@@ -84,7 +62,7 @@ def init_pyther(stdscr):
 
         _draw._words(stdscr, main_panel_y, main_panel_x, randomized_words)
 
-        pl_str = player_input(stdscr, pl_input_y, pl_input_x)
+        pl_str = _player._input(stdscr, pl_input_y, pl_input_x)
         is_pl_correct(pl_str, randomized_words, word_counter)
         word_counter += 1
 
