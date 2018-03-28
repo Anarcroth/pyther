@@ -11,6 +11,7 @@ class Player(object):
 
     def input(self, stdscr, y, x):
         curses.echo()
+
         self.pl_str = ''
         while True:
             _input = stdscr.getch(y, x + len(self.pl_str))
@@ -22,7 +23,7 @@ class Player(object):
                 self.num_key_presses += 1
             elif _input == 269: # F5
                 init_pyther(stdscr)
-            else:
+            elif _input > 0:
                 self.pl_str += chr(_input)
                 self.num_key_presses += 1
 

@@ -5,6 +5,7 @@ import sys,os
 import curses
 import random
 import time
+import threading
 from _draw import Draw
 from _player import Player
 
@@ -28,10 +29,19 @@ def get_words_from(_file):
     random.shuffle(words)
     return { w : None for w in words }
 
+
+def incr_clock(stdscr, clk, draw):
+    draw.clock(stdscr)
+    draw.time += 1
+    if not clk.is_set():
+        threading.Timer(1, incr_clock, [stdscr, clk, draw]).start()
+
 def init_pyther(stdscr, draw):
 
     stdscr.clear()
     stdscr.refresh()
+
+    stdscr.nodelay(True)
 
     curses.start_color()
     curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
@@ -40,17 +50,20 @@ def init_pyther(stdscr, draw):
     word_counter = 0
     randomized_words = get_words_from("./word_lists/200.txt")
 
+    type_clock = threading.Event()
+    incr_clock(stdscr, type_clock, draw)
+
     player = Player()
 
     while True:
         stdscr.clear()
         stdscr.border()
 
-        stdscr.addstr("height: " + str(word_counter))
         stdscr.addstr("width: " + str(len(randomized_words)))
 
         draw.main_panel(stdscr)
         draw.input_panel(stdscr)
+        draw.clock(stdscr)
 
         if draw.check_first_line(randomized_words):
             word_counter = 0
@@ -62,6 +75,8 @@ def init_pyther(stdscr, draw):
         word_counter += 1
 
         stdscr.refresh()
+
+    type_clock.set()
 
 if __name__ == "__main__":
     curses.wrapper(init)

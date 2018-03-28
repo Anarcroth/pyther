@@ -1,6 +1,7 @@
 #!bin/python3
 
 import curses
+import threading
 
 class Draw(object):
 
@@ -15,6 +16,8 @@ class Draw(object):
         self.pl_input_y, self.pl_input_x = self.input_panel_y + 1, self.input_panel_x_lf + 1
 
         self.max_panel_len = self.main_panel_x * 2 - 2
+
+        self.time = 0
 
     def main_menu(self, stdscr):
         stdscr.nodelay(0);
@@ -56,6 +59,9 @@ class Draw(object):
         stdscr.addstr(self.main_panel_y - 4, self.main_panel_x * 2 - 1, "|")
         stdscr.addstr(self.main_panel_y - 3, self.main_panel_x * 2 - 1, "|")
         stdscr.addstr(self.main_panel_y - 2, self.main_panel_x * 2 - 1, "|")
+
+    def clock(self, stdscr):
+        stdscr.addstr(self.main_panel_y - 3, self.max_panel_len + 5, str(self.time))
 
     def input_panel(self, stdscr):
         for n in range(self.input_panel_x_ri - self.input_panel_x_lf + 1):
