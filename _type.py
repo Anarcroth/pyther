@@ -9,9 +9,7 @@ import threading
 from _draw import Draw
 from _player import Player
 
-def init(stdscr):
-    draw = Draw(stdscr)
-
+def make_choice(stdscr, draw):
     choice = draw.main_menu(stdscr)
     if choice == 0:
         init_pyther(stdscr, draw)
@@ -23,6 +21,10 @@ def init(stdscr):
         return;
     elif choice == 3:
         sys.exit();
+
+def init(stdscr):
+    draw = Draw(stdscr)
+    make_choice(stdscr, draw)
 
 def get_words_from(_file):
     words = open(_file).read().split("\n")
@@ -36,30 +38,14 @@ def incr_clock(stdscr, clk, draw):
     if not clk.is_set():
         threading.Timer(1, incr_clock, [stdscr, clk, draw]).start()
 
-def init_pyther(stdscr, draw):
-
-    stdscr.clear()
-    stdscr.refresh()
-
-    stdscr.nodelay(True)
-
-    curses.start_color()
-    curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
-    curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
-
+def run_pyther(stdscr, draw):
     word_counter = 0
     randomized_words = get_words_from("./word_lists/200.txt")
 
-    type_clock = threading.Event()
-    incr_clock(stdscr, type_clock, draw)
-
     player = Player()
-
-    while True:
+    while draw.time < 61:
         stdscr.clear()
         stdscr.border()
-
-        stdscr.addstr("width: " + str(len(randomized_words)))
 
         draw.main_panel(stdscr)
         draw.input_panel(stdscr)
@@ -76,7 +62,28 @@ def init_pyther(stdscr, draw):
 
         stdscr.refresh()
 
+def init_pyther(stdscr, draw):
+
+    stdscr.clear()
+    stdscr.refresh()
+
+    stdscr.nodelay(True)
+
+    curses.start_color()
+    curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
+    curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
+
+    type_clock = threading.Event()
+    incr_clock(stdscr, type_clock, draw)
+
+    run_pyther(stdscr, draw)
+
     type_clock.set()
+
+    stdscr.clear()
+    stdscr.refresh()
+
+    make_choice(stdscr, draw)
 
 if __name__ == "__main__":
     curses.wrapper(init)

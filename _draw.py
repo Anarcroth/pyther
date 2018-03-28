@@ -20,7 +20,7 @@ class Draw(object):
         self.time = 0
 
     def main_menu(self, stdscr):
-        stdscr.nodelay(0);
+        #stdscr.nodelay(False);
         stdscr.clear();
         stdscr.border();
 
@@ -46,7 +46,7 @@ class Draw(object):
             elif action == ord("\n"):
                 selection = option;
 
-            return selection
+        return selection
 
     def main_panel(self, stdscr):
         for n in range(self.main_panel_x):
