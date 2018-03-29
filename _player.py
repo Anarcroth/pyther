@@ -24,7 +24,7 @@ class Player(object):
                 self.pl_str = self.pl_str[:-1]
                 self.num_key_presses += 1
             elif _input == 269: # F5
-                init_pyther(stdscr)
+                _type.init(stdscr)
             elif _input > 0:
                 self.pl_str += chr(_input)
                 self.num_key_presses += 1
@@ -40,3 +40,5 @@ class Player(object):
         else:
             words[current_word] = False
             self.errors += 1
+
+import _type

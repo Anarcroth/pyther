@@ -5,7 +5,7 @@ import threading
 
 class Draw(object):
 
-    def __init__(self, stdscr):
+    def init(self, stdscr):
         self.height, self.width = stdscr.getmaxyx()
         self.main_panel_y, self.main_panel_x = int(self.height / 3), int(self.width / 3)
 
