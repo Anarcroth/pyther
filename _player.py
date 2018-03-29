@@ -18,6 +18,8 @@ class Player(object):
             if _input == 32: # SPACE
                 break
             elif _input == 263: # BACKSPACE
+                if len(self.pl_str) == 0:
+                    continue
                 stdscr.addstr(y, x + len(self.pl_str) - 1, ' ')
                 self.pl_str = self.pl_str[:-1]
                 self.num_key_presses += 1
