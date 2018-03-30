@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys,os
+#import sys.argv
 import curses
 import random
 import time
@@ -9,16 +10,17 @@ import threading
 from _draw import Draw
 from _player import Player
 
-class Type(object):
+class Pyther(object):
 
     def __init__(self, file_path):
         self.words = open(file_path).read().split("\n")
         self.draw = Draw()
+        self.player = Player()
 
     def make_choice(self, stdscr):
         choice = self.draw.main_menu(stdscr)
         if choice == 0:
-            self.init_pyther(stdscr)
+            self.init_screen(stdscr)
         elif choice == 1:
             # TODO show different modes
             return;
@@ -43,11 +45,10 @@ class Type(object):
         if not clk.is_set():
             threading.Timer(1, self.incr_clock, [stdscr, clk]).start()
 
-    def run_pyther(self, stdscr):
+    def run(self, stdscr):
         word_counter = 0
         randomized_words = self.get_words_from()
 
-        player = Player()
         while self.draw.time < 61:
             stdscr.clear()
             stdscr.border()
@@ -61,13 +62,13 @@ class Type(object):
 
             self.draw.words(stdscr, randomized_words)
 
-            player.input(stdscr, self.draw.pl_input_y, self.draw.pl_input_x)
-            player.is_correct(randomized_words, word_counter)
+            self.player.input(stdscr, self.draw.pl_input_y, self.draw.pl_input_x)
+            self.player.is_correct(randomized_words, word_counter)
             word_counter += 1
 
             stdscr.refresh()
 
-    def init_pyther(self, stdscr):
+    def init_screen(self, stdscr):
 
         stdscr.clear()
         stdscr.refresh()
@@ -81,7 +82,7 @@ class Type(object):
         type_clock = threading.Event()
         self.incr_clock(stdscr, type_clock)
 
-        self.run_pyther(stdscr)
+        self.run(stdscr)
 
         #type_clock.set()
 
@@ -93,5 +94,5 @@ class Type(object):
         self.make_choice(stdscr)
 
 if __name__ == "__main__":
-    _type = Type("./word_lists/200.txt")
-    curses.wrapper(_type.init)
+    pyther = Pyther("./word_lists/200.txt")
+    curses.wrapper(pyther.init)
