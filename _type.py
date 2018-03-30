@@ -91,6 +91,8 @@ class Pyther(object):
         stdscr.clear()
         stdscr.refresh()
 
+        self.player.save_score()
+
         self.make_choice(stdscr)
 
 if __name__ == "__main__":

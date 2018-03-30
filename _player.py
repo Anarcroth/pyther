@@ -4,8 +4,10 @@ import curses
 
 class Player(object):
     def __init__(self):
+        self.score = 0
         self.errors = 0
-        self.correct_words = 0
+        self.accuracy = 0
+        self.correct_chars = 0
         self.num_key_presses = 0
         self.pl_str = ''
 
@@ -29,16 +31,26 @@ class Player(object):
                 self.pl_str += chr(_input)
                 self.num_key_presses += 1
 
-    def get_net_wpm():
-        return (self.correcrt_words / 5 + self.errors) / time
+    def get_net_wpm(self):
+        return (self.num_key_presses / 5 - self.errors) / 1
 
     def is_correct(self, words, word_counter):
         current_word = list(words.keys())[word_counter]
         if current_word == self.pl_str:
             words[self.pl_str] = True
-            self.correct_words += 1
+            self.correct_chars += len(self.pl_str)
         else:
             words[current_word] = False
             self.errors += 1
+
+    def get_final_stats(self):
+        self.score = self.get_net_wpm()
+        self.accuracy = (self.correct_chars / self.num_key_presses)
+
+    def save_score(self):
+        self.get_final_stats()
+        player_data = "WPM:" + str(self.score) + "\nAccuracy:" + str(self.accuracy) + "\n\n"
+        with open("score", "w") as pl_file:
+            pl_file.write(player_data)
 
 import _type
