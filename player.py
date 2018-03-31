@@ -13,8 +13,9 @@ class Player(object):
 
     def input(self, stdscr, y, x):
         curses.echo()
-
+        stdscr.nodelay(True)
         self.pl_str = ''
+
         while True:
             _input = stdscr.getch(y, x + len(self.pl_str))
             if _input == 32: # SPACE

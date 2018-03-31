@@ -61,8 +61,13 @@ class Draw(object):
         stdscr.addstr(self.main_panel_y - 3, self.main_panel_x * 2 - 1, "|")
         stdscr.addstr(self.main_panel_y - 2, self.main_panel_x * 2 - 1, "|")
 
-    def clock(self, stdscr):
+        # Draw time
         stdscr.addstr(self.main_panel_y - 3, self.max_panel_len + 5, str(self.time))
+
+    def init_clock(self, stdscr, clk):
+        self.time += 1
+        if not clk.is_set():
+            threading.Timer(1, self.init_clock, [stdscr, clk]).start()
 
     def input_panel(self, stdscr):
         for n in range(self.input_panel_x_ri - self.input_panel_x_lf + 1):

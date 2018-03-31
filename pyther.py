@@ -10,15 +10,14 @@ from player import Player
 
 class Pyther(object):
 
-    def __init__(self, file_path, stdscr):
+    def __init__(self, file_path):
         self.words = open(file_path).read().split("\n")
-        self.draw = Draw(stdscr)
-        self.player = Player()
 
-    def make_choice(self, stdscr):
-        choice = self.draw.main_menu(stdscr)
+    def make_choice(self, stdscr, draw, player):
+        choice = draw.main_menu(stdscr)
         if choice == 0:
             self.init_pyther_screen(stdscr)
+            self.run(stdscr, draw, player)
         elif choice == 1:
             # TODO show different modes
             return;
@@ -32,34 +31,36 @@ class Pyther(object):
         random.shuffle(self.words)
         return { w : None for w in self.words }
 
-    def incr_clock(self, stdscr, clk):
-        self.draw.clock(stdscr)
-        self.draw.time += 1
-        if not clk.is_set():
-            threading.Timer(1, self.incr_clock, [stdscr, clk]).start()
+    def run(self, stdscr, draw, player):
+        type_clock = threading.Event()
+        draw.init_clock(stdscr, type_clock)
 
-    def run(self, stdscr):
         word_counter = 0
         randomized_words = self.get_words_from()
 
-        while self.draw.time < 61:
+        while draw.time < 61:
             stdscr.clear()
             stdscr.border()
 
-            self.draw.main_panel(stdscr)
-            self.draw.input_panel(stdscr)
-            self.draw.clock(stdscr)
+            draw.main_panel(stdscr)
+            draw.input_panel(stdscr)
 
-            if self.draw.check_first_line(randomized_words):
+            if draw.check_first_line(randomized_words):
                 word_counter = 0
 
-            self.draw.words(stdscr, randomized_words)
+            draw.words(stdscr, randomized_words)
 
-            self.player.input(stdscr, self.draw.pl_input_y, self.draw.pl_input_x)
-            self.player.is_correct(randomized_words, word_counter)
+            player.input(stdscr, draw.pl_input_y, draw.pl_input_x)
+            player.is_correct(randomized_words, word_counter)
             word_counter += 1
 
             stdscr.refresh()
+
+        #type_clock.set()
+        del type_clock
+
+        player.save_score()
+        self.make_choice(stdscr)
 
     def init_pyther_screen(self, stdscr):
 
@@ -72,24 +73,11 @@ class Pyther(object):
         curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
         curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
 
-        type_clock = threading.Event()
-        self.incr_clock(stdscr, type_clock)
-
-        self.run(stdscr)
-
-        #type_clock.set()
-        del type_clock
-
-        stdscr.clear()
-        stdscr.refresh()
-
-        self.player.save_score()
-
-        self.make_choice(stdscr)
-
 def setup_pyther(stdscr):
-    pyther = Pyther("./word_lists/200.txt", stdscr)
-    pyther.make_choice(stdscr)
+    pyther = Pyther("./word_lists/200.txt")
+    draw = Draw(stdscr)
+    player = Player()
+    pyther.make_choice(stdscr, draw, player)
 
 if __name__ == "__main__":
     curses.wrapper(setup_pyther)
