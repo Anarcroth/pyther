@@ -10,15 +10,15 @@ from player import Player
 
 class Pyther(object):
 
-    def __init__(self, file_path):
+    def __init__(self, file_path, stdscr):
         self.words = open(file_path).read().split("\n")
-        self.draw = Draw()
+        self.draw = Draw(stdscr)
         self.player = Player()
 
     def make_choice(self, stdscr):
         choice = self.draw.main_menu(stdscr)
         if choice == 0:
-            self.init_screen(stdscr)
+            self.init_pyther_screen(stdscr)
         elif choice == 1:
             # TODO show different modes
             return;
@@ -27,10 +27,6 @@ class Pyther(object):
             return;
         elif choice == 3:
             sys.exit();
-
-    def init(self, stdscr):
-        self.draw.init(stdscr)
-        self.make_choice(stdscr)
 
     def get_words_from(self):
         random.shuffle(self.words)
@@ -65,7 +61,7 @@ class Pyther(object):
 
             stdscr.refresh()
 
-    def init_screen(self, stdscr):
+    def init_pyther_screen(self, stdscr):
 
         stdscr.clear()
         stdscr.refresh()
@@ -82,7 +78,6 @@ class Pyther(object):
         self.run(stdscr)
 
         #type_clock.set()
-
         del type_clock
 
         stdscr.clear()
@@ -92,6 +87,9 @@ class Pyther(object):
 
         self.make_choice(stdscr)
 
+def setup_pyther(stdscr):
+    pyther = Pyther("./word_lists/200.txt", stdscr)
+    pyther.make_choice(stdscr)
+
 if __name__ == "__main__":
-    pyther = Pyther("./word_lists/200.txt")
-    curses.wrapper(pyther.init)
+    curses.wrapper(setup_pyther)

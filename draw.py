@@ -5,7 +5,7 @@ import threading
 
 class Draw(object):
 
-    def init(self, stdscr):
+    def __init__(self, stdscr):
         self.height, self.width = stdscr.getmaxyx()
         self.main_panel_y, self.main_panel_x = int(self.height / 3), int(self.width / 3)
 
@@ -19,8 +19,9 @@ class Draw(object):
 
         self.time = 0
 
+        self.line_words = ['']
+
     def main_menu(self, stdscr):
-        #stdscr.nodelay(False);
         stdscr.clear();
         stdscr.border();
 
@@ -75,10 +76,15 @@ class Draw(object):
         lines = 4
         prev_pos_x = 0
         current_word = True
+        current_line = True
+        self.line_words = []
         for word in words:
             if self.main_panel_x + prev_pos_x + len(word) > self.max_panel_len:
+                current_line = False
                 lines -= 1
                 prev_pos_x = 0
+            if current_line and word != None:
+                self.line_words.append(word)
             if lines < 2:
                 break
             if words[word] == True:
@@ -94,20 +100,7 @@ class Draw(object):
             prev_pos_x += len(word + " ")
 
     def check_first_line(self, words):
-        line_len = 0
-        prev_pos_x = 0
-        past_words = []
-        line_complete = False
-        for word in words:
-            line_len += 1
-            if words[word] != None:
-                past_words.append(word)
-            if self.main_panel_x + prev_pos_x + len(word) > self.max_panel_len and line_len == len(past_words) + 1:
-                line_complete = True
-                break
-            prev_pos_x += len(word + " ")
-
-        if line_complete:
-            for wo in past_words: del words[wo]
+        if words[self.line_words[-1]] != None:
+            for w in self.line_words: del words[w]
             return True
         return False

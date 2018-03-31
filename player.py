@@ -26,7 +26,7 @@ class Player(object):
                 self.pl_str = self.pl_str[:-1]
                 self.num_key_presses += 1
             elif _input == 269: # F5
-                _type.init(stdscr)
+                pyther.init_pyther_screen(stdscr)
             elif _input > 0:
                 self.pl_str += chr(_input)
                 self.num_key_presses += 1
