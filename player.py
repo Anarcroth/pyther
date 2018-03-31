@@ -53,4 +53,4 @@ class Player(object):
         with open("score", "w") as pl_file:
             pl_file.write(player_data)
 
-import _type
+import pyther

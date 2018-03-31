@@ -2,13 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import sys,os
-#import sys.argv
 import curses
 import random
-import time
 import threading
-from _draw import Draw
-from _player import Player
+from draw import Draw
+from player import Player
 
 class Pyther(object):
 
@@ -37,7 +35,6 @@ class Pyther(object):
     def get_words_from(self):
         random.shuffle(self.words)
         return { w : None for w in self.words }
-
 
     def incr_clock(self, stdscr, clk):
         self.draw.clock(stdscr)
