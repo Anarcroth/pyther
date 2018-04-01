@@ -102,11 +102,16 @@ class Pyther(object):
         curses.echo()
 =======
     def run(self):
+        words = open("./word_lists/200.txt").read().split("\n")
+        random.shuffle(words)
+        words = { w : None for w in words }
+
         curses.echo()
 
         type_clock = threading.Event()
         draw.init_clock(screen, type_clock)
 
+        draw.time = 0
         word_counter = 0
 >>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
 
@@ -132,6 +137,7 @@ class Pyther(object):
             if self.check_first_line():
                 word_counter = 0
 
+<<<<<<< HEAD
             self.drwords()
 
             _input = screen.getch(pl_input_y, pl_input_x + len(pl_str))
@@ -142,6 +148,9 @@ class Pyther(object):
 =======
         while draw.time < 60:
 >>>>>>> 8ae3411... Added ESC char to exit pyther
+=======
+        while draw.time < 10:
+>>>>>>> 0082a94... Bugfixes for words, game restart, exceptions for scores that are 0
             screen.clear()
             screen.border()
 
@@ -162,6 +171,7 @@ class Pyther(object):
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         #type_clock.set()
         #del type_clock
 
@@ -171,8 +181,14 @@ class Pyther(object):
 =======
         #type_clock.wait
 >>>>>>> 36f7f0c... Handeled KeyboardInterrupt
+=======
+        type_clock.wait(1)
+>>>>>>> 0082a94... Bugfixes for words, game restart, exceptions for scores that are 0
         type_clock.set()
         del type_clock
+
+        screen.clear()
+        screen.refresh()
 
         player.save_score()
         self.make_choice()
@@ -188,6 +204,7 @@ class Pyther(object):
         curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
 
 def setup_pyther(stdscr):
+<<<<<<< HEAD
 <<<<<<< HEAD
     global screen
     screen = stdscr.subwin(0,0)
@@ -216,15 +233,15 @@ def setup_pyther(stdscr):
     pyther.run(player)
 =======
     global draw, player, words, screen
+=======
+    global draw, player, screen
+    global words
+>>>>>>> 0082a94... Bugfixes for words, game restart, exceptions for scores that are 0
 
     screen = stdscr
     pyther = Pyther()
     draw = Draw(screen)
     player = Player(draw.pl_input_y, draw.pl_input_x)
-
-    words = open("./word_lists/200.txt").read().split("\n")
-    random.shuffle(words)
-    words = { w : None for w in words }
 
     pyther.make_choice()
 >>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects

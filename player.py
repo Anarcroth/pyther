@@ -29,7 +29,7 @@ class Player(object):
                 elif _input == 263: # BACKSPACE
                     if len(self.pl_str) == 0:
                         continue
-                    screen.addstr(y, x + len(self.pl_str) - 1, ' ')
+                    screen.addstr(self.y, self.x + len(self.pl_str) - 1, ' ')
                     self.pl_str = self.pl_str[:-1]
                     self.num_key_presses += 1
                 elif _input == 269: # F5
@@ -58,12 +58,16 @@ class Player(object):
 
     def get_final_stats(self):
         self.score = self.get_net_wpm()
-        self.accuracy = (self.correct_chars / self.num_key_presses)
+        if self.num_key_presses > 0:
+            self.accuracy = (self.correct_chars / self.num_key_presses)
+        else:
+            self.accuracy = 0
+            self.score = 0
 
     def save_score(self):
         self.get_final_stats()
         player_data = "WPM:" + str(self.score) + "\nAccuracy:" + str(self.accuracy) + "\n\n"
-        with open("score", "w") as pl_file:
+        with open("score", "a") as pl_file:
             pl_file.write(player_data)
 
 import pyther
