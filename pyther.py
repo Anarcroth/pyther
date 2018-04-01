@@ -107,11 +107,10 @@ class Pyther(object):
         type_clock = threading.Event()
         draw.init_clock(screen, type_clock)
 
-        pl_y, pl_x = draw.pl_input_y, draw.pl_input_x
-
         word_counter = 0
 >>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
 
+<<<<<<< HEAD
 <<<<<<< HEAD
         pl_str = ''
 =======
@@ -140,6 +139,9 @@ class Pyther(object):
             #player.input(stdscr, draw.pl_input_y, draw.pl_input_x)
 
 =======
+=======
+        while draw.time < 60:
+>>>>>>> 8ae3411... Added ESC char to exit pyther
             screen.clear()
             screen.border()
 
@@ -151,7 +153,7 @@ class Pyther(object):
 
             draw.words(screen, words)
 
-            player.input(screen, pl_y, pl_x, type_clock)
+            player.input(screen, type_clock)
             player.is_correct(words, word_counter)
 >>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
             word_counter += 1
@@ -216,10 +218,9 @@ def setup_pyther(stdscr):
     global draw, player, words, screen
 
     screen = stdscr
-
     pyther = Pyther()
     draw = Draw(screen)
-    player = Player()
+    player = Player(draw.pl_input_y, draw.pl_input_x)
 
     words = open("./word_lists/200.txt").read().split("\n")
     random.shuffle(words)
