@@ -12,25 +12,23 @@ class Player(object):
         self.num_key_presses = 0
         self.pl_str = ''
 
-    def input(self, stdscr, y, x):
-        curses.echo()
-        stdscr.nodelay(True)
+    def input(self, screen, y, x):
         self.pl_str = ''
 
         while True:
             # Control how fast this loop should execute. Do not comment out since it will cause major CPU usage if not present.
             time.sleep(0.05)
-            _input = stdscr.getch(y, x + len(self.pl_str))
+            _input = screen.getch(y, x + len(self.pl_str))
             if _input == 32: # SPACE
                 break
             elif _input == 263: # BACKSPACE
                 if len(self.pl_str) == 0:
                     continue
-                stdscr.addstr(y, x + len(self.pl_str) - 1, ' ')
+                screen.addstr(y, x + len(self.pl_str) - 1, ' ')
                 self.pl_str = self.pl_str[:-1]
                 self.num_key_presses += 1
             elif _input == 269: # F5
-                pyther.init_pyther_screen(stdscr)
+                pyther.init_pyther_screen(screen)
             elif _input > 0:
                 self.pl_str += chr(_input)
                 self.num_key_presses += 1
