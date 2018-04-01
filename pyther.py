@@ -92,7 +92,14 @@ class Pyther(object):
         screen.nodelay(True)
         curses.echo()
 
+<<<<<<< HEAD
         pl_str = ''
+=======
+        while draw.time < 61:
+            time.sleep(1)
+            stdscr.clear()
+            stdscr.border()
+>>>>>>> b004280... Added time sleep to 1
 
         while True:
             time.sleep(0.09)
