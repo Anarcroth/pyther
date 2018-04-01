@@ -151,7 +151,7 @@ class Pyther(object):
 
             draw.words(screen, words)
 
-            player.input(screen, pl_y, pl_x)
+            player.input(screen, pl_y, pl_x, type_clock)
             player.is_correct(words, word_counter)
 >>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
             word_counter += 1
@@ -159,12 +159,16 @@ class Pyther(object):
             screen.refresh()
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         #type_clock.set()
         #del type_clock
 
         player.save_score()
         self.make_choice(screen)
 =======
+=======
+        #type_clock.wait
+>>>>>>> 36f7f0c... Handeled KeyboardInterrupt
         type_clock.set()
         del type_clock
 
