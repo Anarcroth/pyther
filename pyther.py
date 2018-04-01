@@ -102,8 +102,12 @@ class Pyther(object):
         curses.echo()
 =======
     def run(self):
+        curses.echo()
+
         type_clock = threading.Event()
         draw.init_clock(screen, type_clock)
+
+        pl_y, pl_x = draw.pl_input_y, draw.pl_input_x
 
         word_counter = 0
 >>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
@@ -147,7 +151,7 @@ class Pyther(object):
 
             draw.words(screen, words)
 
-            player.input(screen, draw.pl_input_y, draw.pl_input_x)
+            player.input(screen, pl_y, pl_x)
             player.is_correct(words, word_counter)
 >>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
             word_counter += 1
@@ -172,8 +176,6 @@ class Pyther(object):
 
         screen.clear()
         screen.refresh()
-
-        screen.nodelay(True)
 
         curses.start_color()
         curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
@@ -212,7 +214,7 @@ def setup_pyther(stdscr):
     screen = stdscr
 
     pyther = Pyther()
-    draw = Draw(stdscr)
+    draw = Draw(screen)
     player = Player()
 
     words = open("./word_lists/200.txt").read().split("\n")
