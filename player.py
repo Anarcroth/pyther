@@ -1,6 +1,7 @@
 #!bin/python3
 
 import curses
+import time
 
 class Player(object):
     def __init__(self):
@@ -17,6 +18,8 @@ class Player(object):
         self.pl_str = ''
 
         while True:
+            # Control how fast this loop should execute. Do not comment out since it will cause major CPU usage if not present.
+            time.sleep(0.05)
             _input = stdscr.getch(y, x + len(self.pl_str))
             if _input == 32: # SPACE
                 break

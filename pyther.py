@@ -11,6 +11,7 @@ from player import Player
 
 class Pyther(object):
 
+<<<<<<< HEAD
     def __init__(self, file_path):
         self.time = 0
 
@@ -21,6 +22,13 @@ class Pyther(object):
         if choice == 0:
             self.init_pyther_screen()
             self.run(draw, player)
+=======
+    def make_choice(self):
+        choice = draw.main_menu(screen)
+        if choice == 0:
+            self.init_pyther_screen()
+            self.run()
+>>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
         elif choice == 1:
             # TODO show different modes
             return;
@@ -30,6 +38,7 @@ class Pyther(object):
         elif choice == 3:
             sys.exit();
 
+<<<<<<< HEAD
     #def randomize_words(self):
 
     def inp(self, player, _input, pl_str, word_counter):
@@ -91,11 +100,19 @@ class Pyther(object):
 
         screen.nodelay(True)
         curses.echo()
+=======
+    def run(self):
+        type_clock = threading.Event()
+        draw.init_clock(screen, type_clock)
+
+        word_counter = 0
+>>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
 
 <<<<<<< HEAD
         pl_str = ''
 =======
         while draw.time < 61:
+<<<<<<< HEAD
             time.sleep(1)
             stdscr.clear()
             stdscr.border()
@@ -118,15 +135,38 @@ class Pyther(object):
             self.inp(player, _input, pl_str, word_counter)
             #player.input(stdscr, draw.pl_input_y, draw.pl_input_x)
 
+=======
+            screen.clear()
+            screen.border()
+
+            draw.main_panel(screen)
+            draw.input_panel(screen)
+
+            if draw.check_first_line(words):
+                word_counter = 0
+
+            draw.words(screen, words)
+
+            player.input(screen, draw.pl_input_y, draw.pl_input_x)
+            player.is_correct(words, word_counter)
+>>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
             word_counter += 1
 
             screen.refresh()
 
+<<<<<<< HEAD
         #type_clock.set()
         #del type_clock
 
         player.save_score()
         self.make_choice(screen)
+=======
+        type_clock.set()
+        del type_clock
+
+        player.save_score()
+        self.make_choice()
+>>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
 
     def init_pyther_screen(self):
 
@@ -140,6 +180,7 @@ class Pyther(object):
         curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
 
 def setup_pyther(stdscr):
+<<<<<<< HEAD
     global screen
     screen = stdscr.subwin(0,0)
     screen.box()
@@ -165,6 +206,21 @@ def setup_pyther(stdscr):
     player = Player()
     pyther.init_pyther_screen()
     pyther.run(player)
+=======
+    global draw, player, words, screen
+
+    screen = stdscr
+
+    pyther = Pyther()
+    draw = Draw(stdscr)
+    player = Player()
+
+    words = open("./word_lists/200.txt").read().split("\n")
+    random.shuffle(words)
+    words = { w : None for w in words }
+
+    pyther.make_choice()
+>>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
 
 if __name__ == "__main__":
     curses.wrapper(setup_pyther)
