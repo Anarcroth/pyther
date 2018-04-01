@@ -138,6 +138,7 @@ class Pyther(object):
                 word_counter = 0
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             self.drwords()
 
             _input = screen.getch(pl_input_y, pl_input_x + len(pl_str))
@@ -151,6 +152,9 @@ class Pyther(object):
 =======
         while draw.time < 10:
 >>>>>>> 0082a94... Bugfixes for words, game restart, exceptions for scores that are 0
+=======
+        while draw.time < 61:
+>>>>>>> e964d78... Updated README and LICENSE
             screen.clear()
             screen.border()
 
