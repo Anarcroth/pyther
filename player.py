@@ -2,6 +2,7 @@
 
 import curses
 import time
+from datetime import datetime
 import sys, os
 
 class Player(object):
@@ -59,15 +60,15 @@ class Player(object):
     def get_final_stats(self):
         self.score = self.get_net_wpm()
         if self.num_key_presses > 0:
-            self.accuracy = (self.correct_chars / self.num_key_presses)
+            self.accuracy = round(self.correct_chars / self.num_key_presses, 2)
         else:
-            self.accuracy = 0
+            self.accuracy = 0.0
             self.score = 0
 
     def save_score(self):
         self.get_final_stats()
-        player_data = "WPM:" + str(self.score) + "\nAccuracy:" + str(self.accuracy) + "\n\n"
-        with open("score", "a") as pl_file:
+        player_data = "Date: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S") + "\nWPM: " + str(self.score) + "\nAccuracy: " + str(self.accuracy) + "%\n\n"
+        with open("scores", "a") as pl_file:
             pl_file.write(player_data)
 
 import pyther
