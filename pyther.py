@@ -134,6 +134,7 @@ class Pyther(object):
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         pl_str = ''
 =======
         while draw.time < 61:
@@ -176,6 +177,9 @@ class Pyther(object):
 =======
         while draw.time < 10:
 >>>>>>> c8d258d... Added score when game is finished
+=======
+        while draw.time < 61:
+>>>>>>> 97b8c70... Fixed game length, fixed readme
             screen.clear()
             screen.border()
 

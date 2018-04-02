@@ -16,7 +16,7 @@ python3 pyther.py
 
 To see your score
 ```bash
-cat score
+cat scores
 ```
 
 ### Windows TBA
@@ -42,10 +42,8 @@ Currently this comes with only one list of words, but in the near future more wi
 Everybody is welcomed to contribute and expand this project. Originally started as a way to learn the language, this turned out to be quite the fun little task.
 
 ### TODO
-* List high scores after each game
 * Add command line options
 * Add more lists with words
-* Make transition from end game to main menu smoother
 * Package application
 * Add more modes
 
