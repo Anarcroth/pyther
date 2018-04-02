@@ -9,19 +9,11 @@ Why not have the same thing in the terminal?
 
 Right now you can just pull this repository and launch the game from there
 ```bash
-git clone https://github.com/Anarcroth/pyther.git
-cd pyther
+git clone https://github.com/Anarcroth/pyther.git && cd pyther
 python3 pyther.py
 ```
 
-To see your score
-```bash
-cat scores
-```
-
-### Windows TBA
-
-### Mac TBA
+To see your scores in the auto-generated `scores` file.
 
 ### How To
 
@@ -29,13 +21,8 @@ There is one play mode. You type the words on the screen and then you check your
 `Space` moves you to the next word. `F5` resets your current score and restars the game. `ESC` and `Ctrl+C` get you out of Pyther.
 Words colored in `red` are wrong, in `blue` are correct, the current word you are typing is in `bold`.
 
-##### Dependencies
-
-Pyther uses `curses` and `python3`.
-
-## More words?
-
-Currently this comes with only one list of words, but in the near future more will be added (see *TODO* section).
+##### Requirements
+`python3` with `curses`.
 
 ## Contributions
 
