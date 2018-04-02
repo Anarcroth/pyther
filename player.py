@@ -3,7 +3,7 @@
 import curses
 import time
 from datetime import datetime
-import sys, os
+import sys
 
 class Player(object):
     def __init__(self, y, x):
@@ -13,6 +13,8 @@ class Player(object):
         self.correct_chars = 0
         self.num_key_presses = 0
         self.pl_str = ''
+
+        self.restart = False
 
         self.y = y
         self.x = x
@@ -34,8 +36,9 @@ class Player(object):
                     self.pl_str = self.pl_str[:-1]
                     self.num_key_presses += 1
                 elif _input == 269: # F5
-                    pyther.init_pyther_screen()
-                elif _input == 27:
+                    self.restart = True
+                    break
+                elif _input == 27: # ESC
                     raise KeyboardInterrupt
                 elif _input > 0:
                     self.pl_str += chr(_input)
@@ -43,7 +46,6 @@ class Player(object):
             except KeyboardInterrupt:
                 clk.set()
                 sys.exit()
-
 
     def get_net_wpm(self):
         return (self.num_key_presses / 5 - self.errors) / 1
@@ -60,7 +62,7 @@ class Player(object):
     def get_final_stats(self):
         self.score = self.get_net_wpm()
         if self.num_key_presses > 0:
-            self.accuracy = round(self.correct_chars / self.num_key_presses, 2)
+            self.accuracy = round(self.correct_chars / self.num_key_presses, 2) * 100
         else:
             self.accuracy = 0.0
             self.score = 0

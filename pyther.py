@@ -1,11 +1,10 @@
 #!bin/python3
 # -*- coding: utf-8 -*-
 
-import sys,os
+import sys
 import curses
 import random
 import threading
-import time
 from draw import Draw
 from player import Player
 
@@ -38,6 +37,7 @@ class Pyther(object):
         elif choice == 3:
             sys.exit();
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     #def randomize_words(self):
 
@@ -103,13 +103,25 @@ class Pyther(object):
 =======
     def run(self):
         words = open("./word_lists/200.txt").read().split("\n")
-        random.shuffle(words)
-        words = { w : None for w in words }
+=======
+    def init_clock(self, clk):
+        draw.time += 1
+        if not clk.is_set():
+            threading.Timer(1, self.init_clock, [clk]).start()
 
-        curses.echo()
+    def get_words_from(self, path):
+        words = open(path).read().split("\n")
+>>>>>>> da75115... General bug fixes and exception handling
+        random.shuffle(words)
+        return { w : None for w in words }
+
+    def run(self):
+        player = Player(draw.pl_input_y, draw.pl_input_x)
+
+        words = self.get_words_from("./word_lists/200.txt")
 
         type_clock = threading.Event()
-        draw.init_clock(screen, type_clock)
+        self.init_clock(type_clock)
 
         draw.time = 0
         word_counter = 0
@@ -158,8 +170,16 @@ class Pyther(object):
             screen.clear()
             screen.border()
 
+            if player.restart:
+                type_clock.set()
+                self.run()
+
             draw.main_panel(screen)
             draw.input_panel(screen)
+            # This does not update the clock correctly
+            # Since by the player input, there is a block
+            # The actual clock is going but it's not properly shown
+            draw.clock(screen)
 
             if draw.check_first_line(words):
                 word_counter = 0
@@ -176,6 +196,7 @@ class Pyther(object):
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         #type_clock.set()
         #del type_clock
 
@@ -188,8 +209,9 @@ class Pyther(object):
 =======
         type_clock.wait(1)
 >>>>>>> 0082a94... Bugfixes for words, game restart, exceptions for scores that are 0
+=======
+>>>>>>> da75115... General bug fixes and exception handling
         type_clock.set()
-        del type_clock
 
         screen.clear()
         screen.refresh()
@@ -199,6 +221,7 @@ class Pyther(object):
 >>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
 
     def init_pyther_screen(self):
+        curses.echo()
 
         screen.clear()
         screen.refresh()
@@ -208,6 +231,7 @@ class Pyther(object):
         curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
 
 def setup_pyther(stdscr):
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     global screen
@@ -241,11 +265,13 @@ def setup_pyther(stdscr):
     global draw, player, screen
     global words
 >>>>>>> 0082a94... Bugfixes for words, game restart, exceptions for scores that are 0
+=======
+    global draw, screen
+>>>>>>> da75115... General bug fixes and exception handling
 
     screen = stdscr
     pyther = Pyther()
     draw = Draw(screen)
-    player = Player(draw.pl_input_y, draw.pl_input_x)
 
     pyther.make_choice()
 >>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects

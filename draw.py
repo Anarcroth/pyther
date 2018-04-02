@@ -4,6 +4,7 @@
 import curses
 import threading
 import locale
+import sys
 
 locale.setlocale(locale.LC_ALL, '')
 
@@ -19,7 +20,7 @@ class Draw(object):
         self.pl_input_y, self.pl_input_x = self.input_panel_y + 1, self.input_panel_x_lf + 1
         self.max_panel_len = self.main_panel_x * 2 - 2
 
-        self.time = 0
+        self.time = 1
 
         self.line_words = ['']
 
@@ -41,13 +42,16 @@ class Draw(object):
 
             screen.refresh();
 
-            action = screen.getch();
-            if action == curses.KEY_UP:
-                option = (option - 1) % 4;
-            elif action == curses.KEY_DOWN:
-                option = (option + 1) % 4;
-            elif action == ord("\n"):
-                selection = option;
+            try:
+                action = screen.getch();
+                if action == curses.KEY_UP:
+                    option = (option - 1) % 4;
+                elif action == curses.KEY_DOWN:
+                    option = (option + 1) % 4;
+                elif action == ord("\n"):
+                    selection = option
+            except KeyboardInterrupt:
+                sys.exit()
 
         return selection
 
@@ -69,13 +73,8 @@ class Draw(object):
         screen.addstr(self.main_panel_y - 3, self.main_panel_x_ri - 1, "│")
         screen.addstr(self.main_panel_y - 2, self.main_panel_x_ri - 1, "│")
 
-        # Draw time
+    def clock(self, screen):
         screen.addstr(self.main_panel_y - 3, self.max_panel_len + 5, str(self.time))
-
-    def init_clock(self, screen, clk):
-        self.time += 1
-        if not clk.is_set():
-            threading.Timer(1, self.init_clock, [screen, clk]).start()
 
     def input_panel(self, screen):
         for n in range(1, self.input_panel_x_ri - self.input_panel_x_lf):
