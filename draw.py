@@ -24,30 +24,33 @@ class Draw(object):
 
         self.line_words = ['']
 
-    def main_menu(self, screen):
-        screen.clear();
-        screen.border();
+    def main_menu(self, screen, player):
+        curses.noecho()
+        screen.clear()
+        screen.border()
 
-        option = 0;
-        selection = -1;
+        option = 0
+        selection = -1
         while selection < 0:
-            graphics = [0] * 4;
-            graphics[option] = curses.A_REVERSE;
+            graphics = [0] * 4
+            graphics[option] = curses.A_REVERSE
 
-            screen.addstr(int(self.height / 2 - 5), int(self.width / 2 - 8), "Welcome to Pyther");
-            screen.addstr(int(self.height / 2 - 2), int(self.width / 2 - 6), "Start typing", graphics[0]);
-            screen.addstr(int(self.height / 2 - 1), int(self.width / 2 - 3), "Modes", graphics[1]);
-            screen.addstr(int(self.height / 2), int(self.width / 2 - 5), "High scores", graphics[2]);
-            screen.addstr(int(self.height / 2 + 1), int(self.width / 2 - 2), "Exit", graphics[3]);
+            screen.addstr(int(self.height / 2 - 5), int(self.width / 2 - 8), "Welcome to Pyther")
+            screen.addstr(int(self.height / 2 - 2), int(self.width / 2 - 6), "Start typing", graphics[0])
+            screen.addstr(int(self.height / 2 - 1), int(self.width / 2 - 3), "Modes", graphics[1])
+            screen.addstr(int(self.height / 2), int(self.width / 2 - 5), "High scores", graphics[2])
+            screen.addstr(int(self.height / 2 + 1), int(self.width / 2 - 2), "Exit", graphics[3])
 
-            screen.refresh();
+            self.score(screen, player)
+
+            screen.refresh()
 
             try:
-                action = screen.getch();
+                action = screen.getch()
                 if action == curses.KEY_UP:
-                    option = (option - 1) % 4;
+                    option = (option - 1) % 4
                 elif action == curses.KEY_DOWN:
-                    option = (option + 1) % 4;
+                    option = (option + 1) % 4
                 elif action == ord("\n"):
                     selection = option
             except KeyboardInterrupt:
@@ -75,6 +78,12 @@ class Draw(object):
 
     def clock(self, screen):
         screen.addstr(self.main_panel_y - 3, self.max_panel_len + 5, str(self.time))
+
+    def score(self, screen, player):
+        if player != None:
+            screen.addstr(int(self.height / 2 + 3), int(self.width / 2 - 3), "Score")
+            screen.addstr(int(self.height / 2 + 4), int(self.width / 2 - 4), "WPM: {}".format(player.score))
+            screen.addstr(int(self.height / 2 + 5), int(self.width / 2 - 7), "Accuracy: {}%".format(player.accuracy))
 
     def input_panel(self, screen):
         for n in range(1, self.input_panel_x_ri - self.input_panel_x_lf):

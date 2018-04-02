@@ -11,6 +11,7 @@ from player import Player
 class Pyther(object):
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     def __init__(self, file_path):
         self.time = 0
 
@@ -24,6 +25,10 @@ class Pyther(object):
 =======
     def make_choice(self):
         choice = draw.main_menu(screen)
+=======
+    def make_choice(self, player = None):
+        choice = draw.main_menu(screen, player)
+>>>>>>> c8d258d... Added score when game is finished
         if choice == 0:
             self.init_pyther_screen()
             self.run()
@@ -157,6 +162,7 @@ class Pyther(object):
             self.inp(player, _input, pl_str, word_counter)
             #player.input(stdscr, draw.pl_input_y, draw.pl_input_x)
 
+<<<<<<< HEAD
 =======
 =======
         while draw.time < 60:
@@ -167,6 +173,9 @@ class Pyther(object):
 =======
         while draw.time < 61:
 >>>>>>> e964d78... Updated README and LICENSE
+=======
+        while draw.time < 10:
+>>>>>>> c8d258d... Added score when game is finished
             screen.clear()
             screen.border()
 
@@ -217,8 +226,12 @@ class Pyther(object):
         screen.refresh()
 
         player.save_score()
+<<<<<<< HEAD
         self.make_choice()
 >>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
+=======
+        self.make_choice(player)
+>>>>>>> c8d258d... Added score when game is finished
 
     def init_pyther_screen(self):
         curses.echo()
