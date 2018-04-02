@@ -1,4 +1,3 @@
 # Ignore python cache
 *.pyc
-score
-
+scores
