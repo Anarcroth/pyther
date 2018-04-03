@@ -189,10 +189,6 @@ class Pyther(object):
 
             draw.main_panel(screen)
             draw.input_panel(screen)
-            # This does not update the clock correctly
-            # Since by the player input, there is a block
-            # The actual clock is going but it's not properly shown
-            draw.clock(screen)
 
             if draw.check_first_line(words):
                 word_counter = 0

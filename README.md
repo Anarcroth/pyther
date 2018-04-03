@@ -13,7 +13,7 @@ git clone https://github.com/Anarcroth/pyther.git && cd pyther
 python3 pyther.py
 ```
 
-To see your scores in the auto-generated `scores` file.
+See your scores in the auto-generated `scores` file.
 
 ### How To
 

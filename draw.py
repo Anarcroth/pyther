@@ -36,7 +36,7 @@ class Draw(object):
             graphics[option] = curses.A_REVERSE
 
             screen.addstr(int(self.height / 2 - 5), int(self.width / 2 - 8), "Welcome to Pyther")
-            screen.addstr(int(self.height / 2 - 2), int(self.width / 2 - 6), "Start typing", graphics[0])
+            screen.addstr(int(self.height / 2 - 2), int(self.width / 2 - 10), "Start typing (60 sec)", graphics[0])
             screen.addstr(int(self.height / 2 - 1), int(self.width / 2 - 3), "Modes", graphics[1])
             screen.addstr(int(self.height / 2), int(self.width / 2 - 5), "High scores", graphics[2])
             screen.addstr(int(self.height / 2 + 1), int(self.width / 2 - 2), "Exit", graphics[3])
