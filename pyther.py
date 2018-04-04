@@ -34,14 +34,13 @@ class Pyther(object):
             self.run()
 >>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
         elif choice == 1:
-            # TODO show different modes
-            return;
+            screen.addstr(int(self.height / 2 - 1), int(self.width / 2 - 3), "TBA")
         elif choice == 2:
-            # TODO shows high scores
-            return;
+            draw.high_scores(screen, scores)
         elif choice == 3:
             sys.exit();
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     #def randomize_words(self):
@@ -109,6 +108,14 @@ class Pyther(object):
     def run(self):
         words = open("./word_lists/200.txt").read().split("\n")
 =======
+=======
+    def get_scores(file_path):
+        with open(file_path, "r") as pl_file:
+            for line in pl_file:
+                #TODO
+                return
+
+>>>>>>> 51f3a16... WIP: output the top 3 best scores from the third menu option
     def init_clock(self, clk):
         draw.time += 1
         if not clk.is_set():

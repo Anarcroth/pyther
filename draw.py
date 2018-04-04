@@ -5,6 +5,7 @@ import curses
 import threading
 import locale
 import sys
+import re
 
 locale.setlocale(locale.LC_ALL, '')
 
@@ -84,6 +85,15 @@ class Draw(object):
             screen.addstr(int(self.height / 2 + 3), int(self.width / 2 - 3), "Score")
             screen.addstr(int(self.height / 2 + 4), int(self.width / 2 - 4), "WPM: {}".format(player.score))
             screen.addstr(int(self.height / 2 + 5), int(self.width / 2 - 7), "Accuracy: {}%".format(player.accuracy))
+
+    def high_scores(self, screen, scores):
+        screen.clear()
+        while True:
+            screen.addstr(int(self.height / 2 - 5), int(self.width / 2 - 8), "High scores")
+            screen.addstr(int(self.height / 2 - 2), int(self.width / 2 - 10), "1. {}".format(scores[0]))
+            screen.addstr(int(self.height / 2 - 1), int(self.width / 2 - 3), "2. {}".format(scores[1]))
+            screen.addstr(int(self.height / 2), int(self.width / 2 - 5), "3. {}".format(scores[2]))
+            screen.refresh()
 
     def input_panel(self, screen):
         for n in range(1, self.input_panel_x_ri - self.input_panel_x_lf):

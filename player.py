@@ -1,9 +1,10 @@
 #!bin/python3
 
 import curses
+import re
 import time
-from datetime import datetime
 import sys
+from datetime import datetime
 
 class Player(object):
     def __init__(self, y, x):
