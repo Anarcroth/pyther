@@ -92,14 +92,17 @@ class Draw(object):
         top_scores = []
         for s in scores: top_scores.append(re.sub("[{}\']", "", str(s)))
         while True:
-            time.sleep(0.5)
-            screen.addstr(int(self.height / 2 - 5), int(self.width / 2 - 4), "High scores")
-            screen.addstr(int(self.height / 2 - 3), int(self.width / 2 ), "1.")
-            screen.addstr(int(self.height / 2 - 2), int(self.width / 2 - 25), str(top_scores[0]))
-            screen.addstr(int(self.height / 2), int(self.width / 2), "2.")
-            screen.addstr(int(self.height / 2 + 1), int(self.width / 2 - 25), str(top_scores[1]))
-            screen.addstr(int(self.height / 2 + 3), int(self.width / 2), "3.")
-            screen.addstr(int(self.height / 2 + 4), int(self.width / 2 - 25), str(top_scores[2]))
+            time.sleep(0.1)
+            try:
+                screen.addstr(int(self.height / 2 - 5), int(self.width / 2 - 4), "High scores")
+                screen.addstr(int(self.height / 2 - 3), int(self.width / 2 ), "1.")
+                screen.addstr(int(self.height / 2 - 2), int(self.width / 2 - 25), str(top_scores[0]))
+                screen.addstr(int(self.height / 2), int(self.width / 2), "2.")
+                screen.addstr(int(self.height / 2 + 1), int(self.width / 2 - 25), str(top_scores[1]))
+                screen.addstr(int(self.height / 2 + 3), int(self.width / 2), "3.")
+                screen.addstr(int(self.height / 2 + 4), int(self.width / 2 - 25), str(top_scores[2]))
+            except:
+                pass
 
             try:
                 action = screen.getch()
