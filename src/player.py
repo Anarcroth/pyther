@@ -74,7 +74,7 @@ class Player(object):
     def save_score(self):
         self.get_final_stats()
         data = []
-        with open("scores") as pl_file:
+        with open("../scores") as pl_file:
             data = json.load(pl_file)
             data.append({
                 "Date" : datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -84,5 +84,5 @@ class Player(object):
 
         sorted_data = sorted(data, key=lambda k: k["WPM"], reverse=True)
 
-        with open("scores", "w") as fi:
+        with open("../scores", "w") as fi:
             json.dump(sorted_data, fi)

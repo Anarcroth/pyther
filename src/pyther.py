@@ -139,7 +139,7 @@ class Pyther(object):
     def run(self):
         player = Player(draw.pl_input_y, draw.pl_input_x)
 
-        words = self.get_words_from("./word_lists/200.txt")
+        words = self.get_words_from("../word_lists/200.txt")
 
         type_clock = threading.Event()
         self.init_clock(type_clock)
