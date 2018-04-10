@@ -5,6 +5,7 @@ import sys
 import curses
 import random
 import threading
+import json
 from draw import Draw
 from player import Player
 
@@ -36,10 +37,12 @@ class Pyther(object):
         elif choice == 1:
             screen.addstr(int(self.height / 2 - 1), int(self.width / 2 - 3), "TBA")
         elif choice == 2:
-            draw.high_scores(screen, scores)
+            draw.high_scores(screen, self.get_scores("scores"))
+            self.make_choice()
         elif choice == 3:
             sys.exit();
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -114,6 +117,12 @@ class Pyther(object):
             for line in pl_file:
                 #TODO
                 return
+=======
+    def get_scores(self, file_path):
+        with open(file_path) as pl_file:
+            data = json.load(pl_file)
+            return data[:3]
+>>>>>>> 6f3dda2... Added json files for scores, where now everthing outputst properly
 
 >>>>>>> 51f3a16... WIP: output the top 3 best scores from the third menu option
     def init_clock(self, clk):

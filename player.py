@@ -1,9 +1,11 @@
 #!bin/python3
+# -*- coding: utf-8 -*-
 
 import curses
 import re
 import time
 import sys
+import json
 from datetime import datetime
 
 class Player(object):
@@ -64,14 +66,23 @@ class Player(object):
         self.score = self.get_net_wpm()
         if self.num_key_presses > 0:
             self.accuracy = round(self.correct_chars / self.num_key_presses, 2) * 100
+            self.score = round(self.score, 2)
         else:
             self.accuracy = 0.0
             self.score = 0
 
     def save_score(self):
         self.get_final_stats()
-        player_data = "Date: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S") + "\nWPM: " + str(self.score) + "\nAccuracy: " + str(self.accuracy) + "%\n\n"
-        with open("scores", "a") as pl_file:
-            pl_file.write(player_data)
+        data = []
+        with open("scores") as pl_file:
+            data = json.load(pl_file)
+            data.append({
+                "Date" : datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "WPM" : self.score,
+                "Accuracy" : self.accuracy
+            })
 
-import pyther
+        sorted_data = sorted(data, key=lambda k: k["WPM"], reverse=True)
+
+        with open("scores", "w") as fi:
+            json.dump(sorted_data, fi)
