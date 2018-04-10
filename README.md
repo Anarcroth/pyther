@@ -15,6 +15,8 @@ python3 pyther.py
 
 See your scores in the auto-generated `scores` file.
 
+If you want to blank out your scores, or have problem saving them, replace the contents of the file with just `[]`
+
 ### How To
 
 There is one play mode. You type the words on the screen and then you check your `scores` file.
