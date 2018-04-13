@@ -30,12 +30,6 @@ Words colored in `red` are wrong, in `blue` are correct, the current word you ar
 
 Everybody is welcomed to contribute and expand this project. Originally started as a way to learn the language, this turned out to be quite the fun little task.
 
-### TODO
-* Add command line options
-* Add more lists with words
-* Package application
-* Add more modes
-
 ### Note
 I took inspiration from other typing tests. I do not mean to steal or neglect their contribution to the typing community.
 Thank you [10fastfiners](https://10fastfingers.com/typing-test/english), [typingtest](https://www.typingtest.com/), and [typingcat](https://thetypingcat.com/typing-speed-test/1m) for the countless hours of practice!
