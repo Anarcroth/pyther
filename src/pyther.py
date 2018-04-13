@@ -37,7 +37,7 @@ class Pyther(object):
         elif choice == 1:
             screen.addstr(int(self.height / 2 - 1), int(self.width / 2 - 3), "TBA")
         elif choice == 2:
-            draw.high_scores(screen, self.get_scores("scores"))
+            draw.high_scores(screen, self.get_scores("../scores"))
             self.make_choice()
         elif choice == 3:
             sys.exit();
@@ -209,7 +209,7 @@ class Pyther(object):
             if draw.check_first_line(words):
                 word_counter = 0
 
-            draw.words(screen, words)
+            draw.standard_words(screen, words)
 
             player.input(screen, type_clock)
             player.is_correct(words, word_counter)

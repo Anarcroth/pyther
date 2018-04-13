@@ -127,7 +127,7 @@ class Draw(object):
         screen.addstr(self.input_panel_y + 1, self.input_panel_x_lf, "│")
         screen.addstr(self.input_panel_y + 1, self.input_panel_x_ri , "│")
 
-    def words(self, screen, words):
+    def standard_words(self, screen, words):
         lines = 4
         prev_pos_x = 0
         current_word = True
