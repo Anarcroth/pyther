@@ -33,13 +33,13 @@ class Player(object):
                 if _input == 32: # SPACE
                     break
                 elif _input == 263: # BACKSPACE
-                    if len(self.pl_str) == 0:
-                        continue
-                    screen.addstr(self.y, self.x + len(self.pl_str) - 1, ' ')
-                    self.pl_str = self.pl_str[:-1]
-                    self.num_key_presses += 1
+                    if len(self.pl_str) != 0:
+                        screen.addstr(self.y, self.x + len(self.pl_str) - 1, ' ')
+                        self.pl_str = self.pl_str[:-1]
+                        self.num_key_presses += 1
                 elif _input == 269: # F5
                     self.restart = True
+                    time.sleep(1) # Give player a breather before the restart
                     break
                 elif _input == 27: # ESC
                     raise KeyboardInterrupt
@@ -51,7 +51,7 @@ class Player(object):
                 sys.exit()
 
     def get_net_wpm(self):
-        return (self.num_key_presses / 5 - self.errors) / 1
+        return (self.num_key_presses / 5 - self.errors)
 
     def is_correct(self, words, word_counter):
         current_word = list(words.keys())[word_counter]
@@ -63,10 +63,9 @@ class Player(object):
             self.errors += 1
 
     def get_final_stats(self):
-        self.score = self.get_net_wpm()
         if self.num_key_presses > 0:
             self.accuracy = round(self.correct_chars / self.num_key_presses, 2) * 100
-            self.score = round(self.score, 2)
+            self.score = round(self.get_net_wpm(), 2)
         else:
             self.accuracy = 0.0
             self.score = 0

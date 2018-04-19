@@ -93,6 +93,7 @@ class Draw(object):
         for s in scores: top_scores.append(re.sub("[{}\']", "", str(s)))
         while True:
             time.sleep(0.1)
+            screen.border()
             try:
                 screen.addstr(int(self.height / 2 - 5), int(self.width / 2 - 4), "High scores")
                 screen.addstr(int(self.height / 2 - 3), int(self.width / 2 ), "1.")
