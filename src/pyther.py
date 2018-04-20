@@ -3,9 +3,9 @@
 
 import sys
 import curses
-import random
 import threading
 import json
+from words import Words
 from draw import Draw
 from player import Player
 
@@ -130,16 +130,17 @@ class Pyther(object):
         if not clk.is_set():
             threading.Timer(1, self.init_clock, [clk]).start()
 
+<<<<<<< HEAD
     def get_words_from(self, path):
         words = open(path).read().split("\n")
 >>>>>>> da75115... General bug fixes and exception handling
         random.shuffle(words)
         return { w : None for w in words }
 
+=======
+>>>>>>> ad2b5a7... Added words class,WIP
     def run(self):
         player = Player(draw.pl_input_y, draw.pl_input_x)
-
-        words = self.get_words_from("../word_lists/200.txt")
 
         type_clock = threading.Event()
         self.init_clock(type_clock)
@@ -206,14 +207,18 @@ class Pyther(object):
             draw.main_panel(screen)
             draw.input_panel(screen)
 
-            if draw.check_first_line(words):
+            if draw.check_first_line(words._list):
                 word_counter = 0
 
-            draw.standard_words(screen, words)
+            draw.standard_words(screen, words._list)
 
             player.input(screen, type_clock)
+<<<<<<< HEAD
             player.is_correct(words, word_counter)
 >>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
+=======
+            player.is_correct(words._list, word_counter)
+>>>>>>> ad2b5a7... Added words class,WIP
             word_counter += 1
 
             screen.refresh()
@@ -263,6 +268,7 @@ def setup_pyther(stdscr):
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     global screen
     screen = stdscr.subwin(0,0)
     screen.box()
@@ -297,10 +303,14 @@ def setup_pyther(stdscr):
 =======
     global draw, screen
 >>>>>>> da75115... General bug fixes and exception handling
+=======
+    global draw, screen, words
+>>>>>>> ad2b5a7... Added words class,WIP
 
     screen = stdscr
     pyther = Pyther()
     draw = Draw(screen)
+    words = Words()
 
     pyther.make_choice()
 >>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects

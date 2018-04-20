@@ -31,7 +31,8 @@ class Player(object):
             try:
                 _input = screen.getch(self.y, self.x + len(self.pl_str))
                 if _input == 32: # SPACE
-                    break
+                    if len(self.pl_str) != 0:
+                        break
                 elif _input == 263: # BACKSPACE
                     if len(self.pl_str) != 0:
                         screen.addstr(self.y, self.x + len(self.pl_str) - 1, ' ')
