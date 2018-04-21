@@ -153,7 +153,7 @@ class Draw(object):
                 screen.addstr(self.main_panel_y - lines, self.main_panel_x + prev_pos_x + 1, word, curses.A_BOLD)
                 current_word = False
 
-            prev_pos_x += len(word + " ")
+            prev_pos_x += len(word) + 1
 
     def check_first_line(self, words):
         if words[self.line_words[-1]] != None:
