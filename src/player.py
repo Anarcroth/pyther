@@ -22,7 +22,7 @@ class Player(object):
         self.y = y
         self.x = x
 
-    def input(self, screen, clk):
+    def input(self, screen, clk, words, word_counter):
         self.pl_str = ''
 
         while True:
@@ -32,6 +32,7 @@ class Player(object):
                 _input = screen.getch(self.y, self.x + len(self.pl_str))
                 if _input == 32: # SPACE
                     if len(self.pl_str) != 0:
+                        self.is_correct(words, word_counter)
                         break
                 elif _input == 263: # BACKSPACE
                     if len(self.pl_str) != 0:

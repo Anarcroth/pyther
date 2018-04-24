@@ -129,6 +129,8 @@ class Pyther(object):
         draw.time += 1
         if not clk.is_set():
             threading.Timer(1, self.init_clock, [clk]).start()
+        return draw.time
+
 
 <<<<<<< HEAD
     def get_words_from(self, path):
@@ -144,9 +146,6 @@ class Pyther(object):
 
         words.get_words()
 
-        type_clock = threading.Event()
-        self.init_clock(type_clock)
-
         draw.time = 0
         word_counter = 0
 >>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
@@ -154,8 +153,14 @@ class Pyther(object):
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         pl_str = ''
 =======
+=======
+        type_clock = threading.Event()
+        self.init_clock(type_clock)
+
+>>>>>>> 992da1c... Minot changes and fixes
         while draw.time < 61:
 <<<<<<< HEAD
             time.sleep(1)
@@ -214,6 +219,7 @@ class Pyther(object):
 
             draw.standard_words(screen, words._list)
 
+<<<<<<< HEAD
             player.input(screen, type_clock)
 <<<<<<< HEAD
             player.is_correct(words, word_counter)
@@ -221,6 +227,9 @@ class Pyther(object):
 =======
             player.is_correct(words._list, word_counter)
 >>>>>>> ad2b5a7... Added words class,WIP
+=======
+            player.input(screen, type_clock, words._list, word_counter)
+>>>>>>> 992da1c... Minot changes and fixes
             word_counter += 1
 
             screen.refresh()
