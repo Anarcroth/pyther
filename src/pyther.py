@@ -9,8 +9,10 @@ from words import Words
 from draw import Draw
 from player import Player
 
+
 class Pyther(object):
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     def __init__(self, file_path):
@@ -28,6 +30,9 @@ class Pyther(object):
         choice = draw.main_menu(screen)
 =======
     def make_choice(self, player = None):
+=======
+    def make_choice(self, player=None):
+>>>>>>> 83cf9bb... Formats code to pip and adds curses key codes
         choice = draw.main_menu(screen, player)
 >>>>>>> c8d258d... Added score when game is finished
         if choice == 0:
@@ -35,12 +40,13 @@ class Pyther(object):
             self.run()
 >>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
         elif choice == 1:
-            screen.addstr(int(self.height / 2 - 1), int(self.width / 2 - 3), "TBA")
+            screen.addstr(int(self.height / 2 - 1),
+                          int(self.width / 2 - 3), "TBA")
         elif choice == 2:
             draw.high_scores(screen, self.get_scores("../scores"))
             self.make_choice()
         elif choice == 3:
-            sys.exit();
+            sys.exit()
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -131,6 +137,7 @@ class Pyther(object):
             threading.Timer(1, self.init_clock, [clk]).start()
         return draw.time
 
+<<<<<<< HEAD
 
 <<<<<<< HEAD
     def get_words_from(self, path):
@@ -141,6 +148,8 @@ class Pyther(object):
 
 =======
 >>>>>>> ad2b5a7... Added words class,WIP
+=======
+>>>>>>> 83cf9bb... Formats code to pip and adds curses key codes
     def run(self):
         player = Player(draw.pl_input_y, draw.pl_input_x)
 
@@ -275,6 +284,7 @@ class Pyther(object):
         curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
         curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
 
+
 def setup_pyther(stdscr):
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -325,6 +335,7 @@ def setup_pyther(stdscr):
 
     pyther.make_choice()
 >>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
+
 
 if __name__ == "__main__":
     curses.wrapper(setup_pyther)

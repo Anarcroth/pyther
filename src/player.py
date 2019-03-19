@@ -2,11 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import curses
-import re
+import curses.ascii
 import time
 import sys
 import json
 from datetime import datetime
+
 
 class Player(object):
     def __init__(self, y, x):
@@ -26,24 +27,27 @@ class Player(object):
         self.pl_str = ''
 
         while True:
-            # Control how fast this loop should execute. Do not comment out since it will cause major CPU usage if not present.
+            # Control how fast this loop should execute.
+            # Do not comment out since it will cause major
+            # CPU usage if not present.
             time.sleep(0.05)
             try:
                 _input = screen.getch(self.y, self.x + len(self.pl_str))
-                if _input == 32: # SPACE
+                if _input == curses.ascii.SP:
                     if len(self.pl_str) != 0:
                         self.is_correct(words, word_counter)
                         break
-                elif _input == 263: # BACKSPACE
+                elif _input == curses.ascii.DEL:
                     if len(self.pl_str) != 0:
-                        screen.addstr(self.y, self.x + len(self.pl_str) - 1, ' ')
+                        screen.addstr(self.y, self.x + len(self.pl_str) - 1,
+                                      ' ')
                         self.pl_str = self.pl_str[:-1]
                         self.num_key_presses += 1
-                elif _input == 269: # F5
+                elif _input == curses.KEY_F5:
                     self.restart = True
-                    time.sleep(1) # Give player a breather before the restart
+                    time.sleep(1)  # Give player a breather before the restart
                     break
-                elif _input == 27: # ESC
+                elif _input == curses.ascii.ESC:
                     raise KeyboardInterrupt
                 elif _input > 0:
                     self.pl_str += chr(_input)
@@ -66,7 +70,8 @@ class Player(object):
 
     def get_final_stats(self):
         if self.num_key_presses > 0:
-            self.accuracy = round(self.correct_chars / self.num_key_presses, 2) * 100
+            self.accuracy = round(self.correct_chars /
+                                  self.num_key_presses, 2) * 100
             self.score = round(self.get_net_wpm(), 2)
         else:
             self.accuracy = 0.0
@@ -78,9 +83,9 @@ class Player(object):
         with open("../scores") as pl_file:
             data = json.load(pl_file)
             data.append({
-                "Date" : datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "WPM" : self.score,
-                "Accuracy" : self.accuracy
+                "Date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "WPM": self.score,
+                "Accuracy": self.accuracy
             })
 
         sorted_data = sorted(data, key=lambda k: k["WPM"], reverse=True)
