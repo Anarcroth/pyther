@@ -27,25 +27,25 @@ class Player(object):
         self.pl_str = ''
 
         while True:
-            # Control how fast this loop should execute.
-            # Do not comment out since it will cause major
-            # CPU usage if not present.
-            time.sleep(0.05)
             try:
                 _input = screen.getch(self.y, self.x + len(self.pl_str))
                 if _input == curses.ascii.SP:
                     if len(self.pl_str) != 0:
                         self.is_correct(words, word_counter)
                         break
-                elif _input == curses.ascii.DEL:
+                elif _input in (curses.ascii.BS,
+                                curses.ascii.DEL,
+                                curses.KEY_BACKSPACE):
                     if len(self.pl_str) != 0:
-                        screen.addstr(self.y, self.x + len(self.pl_str) - 1,
-                                      ' ')
+                        screen.addstr(self.y,
+                                      self.x + len(self.pl_str) - 1,
+                                      '     ')
                         self.pl_str = self.pl_str[:-1]
                         self.num_key_presses += 1
                 elif _input == curses.KEY_F5:
                     self.restart = True
-                    time.sleep(1)  # Give player a breather before the restart
+                    # Give player a breather before the restart
+                    time.sleep(1)
                     break
                 elif _input == curses.ascii.ESC:
                     raise KeyboardInterrupt
