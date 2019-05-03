@@ -29,14 +29,16 @@ class Player(object):
         while True:
             try:
                 _input = screen.getch(self.y, self.x + len(self.pl_str))
-                if _input == curses.ascii.SP:
-                    if len(self.pl_str) != 0:
+                if _input in [curses.ascii.SP,
+                              curses.ascii.NL,
+                              curses.KEY_ENTER]:
+                    if self.pl_str:
                         self.is_correct(words, word_counter)
                         break
-                elif _input in (curses.ascii.BS,
+                elif _input in [curses.ascii.BS,
                                 curses.ascii.DEL,
-                                curses.KEY_BACKSPACE):
-                    if len(self.pl_str) != 0:
+                                curses.KEY_BACKSPACE]:
+                    if self.pl_str:
                         screen.addstr(self.y,
                                       self.x + len(self.pl_str) - 1,
                                       '     ')
@@ -45,11 +47,15 @@ class Player(object):
                 elif _input == curses.KEY_F5:
                     self.restart = True
                     # Give player a breather before the restart
-                    time.sleep(1)
+                    screen.addstr(self.y,
+                                  self.x,
+                                  'Restarting...')
+                    screen.refresh()
+                    time.sleep(2)
                     break
                 elif _input == curses.ascii.ESC:
                     raise KeyboardInterrupt
-                elif _input > 0:
+                else:
                     self.pl_str += chr(_input)
                     self.num_key_presses += 1
             except KeyboardInterrupt:
