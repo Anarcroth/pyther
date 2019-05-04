@@ -31,47 +31,51 @@ class Player(object):
         while self.has_input:
             try:
                 _input = screen.getch(self.y, self.x + len(self.pl_str))
-                self.handle_submit(_input, words, word_counter)
-                self.handle_delete(_input, screen)
-                self.handle_restart(_input, screen)
-                if _input == curses.ascii.ESC:
+                if self.is_submit(_input):
+                    self.submit(words, word_counter)
+                elif self.is_delete(_input):
+                    self.delete(screen)
+                elif self.is_restart(_input):
+                    self.restart(screen)
+                elif _input == curses.ascii.ESC:
                     raise KeyboardInterrupt
                 else:
                     self.pl_str += chr(_input)
                     self.num_key_presses += 1
+
             except KeyboardInterrupt:
                 clk.set()
                 sys.exit()
 
-    def handle_submit(self, _input, words, word_counter):
-        if _input in [curses.ascii.SP,
-                      curses.ascii.NL,
-                      curses.KEY_ENTER]:
-            if self.pl_str:
-                self.is_correct(words, word_counter)
-                self.has_input = False
+    def is_submit(self, _input):
+        if self.pl_str and _input in [curses.ascii.SP, curses.ascii.NL]:
+            return True
+        return False
 
-    def handle_delete(self, _input, screen):
-        if _input in [curses.ascii.BS,
-                      curses.ascii.DEL,
-                      curses.KEY_BACKSPACE]:
-            if self.pl_str:
-                screen.addstr(self.y,
-                              self.x + len(self.pl_str) - 1,
-                              '     ')
-                self.pl_str = self.pl_str[:-1]
-                self.num_key_presses += 1
+    def submit(self, words, word_counter):
+        self.is_correct(words, word_counter)
+        self.has_input = False
 
-    def handle_restart(self, _input, screen):
+    def is_delete(self, _input):
+        if self.pl_str and _input in [curses.ascii.DEL, curses.KEY_BACKSPACE]:
+            return True
+        return False
+
+    def delete(self, screen):
+        screen.addstr(self.y, self.x + len(self.pl_str) - 1, '   ')
+        self.pl_str = self.pl_str[:-1]
+
+    def is_restart(self, _input):
         if _input == curses.KEY_F5:
-            self.restart = True
-            # Give player a breather before the restart
-            screen.addstr(self.y,
-                          self.x,
-                          'Restarting...')
-            screen.refresh()
-            time.sleep(2)
-            self.has_input = False
+            return True
+        return False
+
+    def restart(self, screen):
+        self.restart = True
+        screen.addstr(self.y, self.x, 'Restarting...')
+        screen.refresh()
+        time.sleep(2)
+        self.has_input = False
 
     def get_net_wpm(self):
         return (self.num_key_presses / 5 - self.errors)
