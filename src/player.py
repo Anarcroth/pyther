@@ -57,12 +57,15 @@ class Player(object):
         self.has_input = False
 
     def is_delete(self, _input):
-        if self.pl_str and _input in [curses.ascii.DEL, curses.KEY_BACKSPACE]:
+        if _input in [curses.ascii.DEL, curses.KEY_BACKSPACE]:
             return True
         return False
 
     def delete(self, screen):
-        screen.addstr(self.y, self.x + len(self.pl_str) - 1, '   ')
+        if not self.pl_str:
+            screen.addstr(self.y, self.x + len(self.pl_str), '   ')
+        else:
+            screen.addstr(self.y, self.x + len(self.pl_str) - 1, '   ')
         self.pl_str = self.pl_str[:-1]
 
     def is_restart(self, _input):
