@@ -50,12 +50,21 @@ class Screen(metaclass=Singleton):
 
         self.line_words = ['']
 
-    def main_menu(self, player):
         self.init()
+
+    def main_menu(self, player):
         self.draw_main_men()
 
     def init(self):
-        curses.noecho()
+        curses.echo()
+
+        self.main_win.clear()
+        self.main_win.refresh()
+
+        curses.start_color()
+        curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
+        curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
+
         self.main_win.clear()
         self.main_win.border()
 

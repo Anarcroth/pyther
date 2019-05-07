@@ -7,9 +7,11 @@ import threading
 import json
 from words import Words
 from draw import Draw
+from screen import Screen
 from player import Player
 
 
+<<<<<<< HEAD
 class Pyther(object):
 
 <<<<<<< HEAD
@@ -152,9 +154,28 @@ class Pyther(object):
 >>>>>>> 83cf9bb... Formats code to pip and adds curses key codes
     def run(self):
         player = Player(draw.pl_input_y, draw.pl_input_x)
+=======
+def make_choice(player=None):
+    choice = draw.main_menu(screen, player)
+    if choice == 0:
+        run()
+    elif choice == 1:
+        screen.addstr(int(screen.height / 2 - 1),
+                      int(screen.width / 2 - 3), "TBA")
+    elif choice == 2:
+        draw.high_scores(screen, get_scores("../scores"))
+        make_choice()
+    elif choice == 3:
+        sys.exit()
 
-        words.get_words()
+>>>>>>> 37d86c3... Refactores main structure
 
+def get_scores(file_path):
+    with open(file_path) as pl_file:
+        data = json.load(pl_file)
+        return data[:3]
+
+<<<<<<< HEAD
         draw.time = 0
         word_counter = 0
 >>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
@@ -215,19 +236,28 @@ class Pyther(object):
 >>>>>>> 97b8c70... Fixed game length, fixed readme
             screen.clear()
             screen.border()
+=======
 
-            if player.restart:
-                type_clock.set()
-                self.run()
+def init_clock(clk):
+    draw.time += 1
+    if not clk.is_set():
+        threading.Timer(1, init_clock, [clk]).start()
+        return draw.time
 
-            draw.main_panel(screen)
-            draw.input_panel(screen)
+>>>>>>> 37d86c3... Refactores main structure
 
-            if draw.check_first_line(words._list):
-                word_counter = 0
+def run():
+    player = Player(draw.pl_input_y, draw.pl_input_x)
 
-            draw.standard_words(screen, words._list)
+    words.get_words()
 
+    draw.time = 0
+    word_counter = 0
+
+    type_clock = threading.Event()
+    init_clock(type_clock)
+
+<<<<<<< HEAD
 <<<<<<< HEAD
             player.input(screen, type_clock)
 <<<<<<< HEAD
@@ -240,9 +270,17 @@ class Pyther(object):
             player.input(screen, type_clock, words._list, word_counter)
 >>>>>>> 992da1c... Minot changes and fixes
             word_counter += 1
+=======
+    while draw.time < 61:
+        screen.clear()
+        screen.border()
+>>>>>>> 37d86c3... Refactores main structure
 
-            screen.refresh()
+        if player.restart:
+            type_clock.set()
+            run()
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -262,10 +300,15 @@ class Pyther(object):
 =======
 >>>>>>> da75115... General bug fixes and exception handling
         type_clock.set()
+=======
+        draw.main_panel(screen)
+        draw.input_panel(screen)
+>>>>>>> 37d86c3... Refactores main structure
 
-        screen.clear()
-        screen.refresh()
+        if draw.check_first_line(words._list):
+            word_counter = 0
 
+<<<<<<< HEAD
         player.save_score()
 <<<<<<< HEAD
         self.make_choice()
@@ -273,16 +316,22 @@ class Pyther(object):
 =======
         self.make_choice(player)
 >>>>>>> c8d258d... Added score when game is finished
+=======
+        draw.standard_words(screen, words._list)
+>>>>>>> 37d86c3... Refactores main structure
 
-    def init_pyther_screen(self):
-        curses.echo()
+        player.input(screen, type_clock, words._list, word_counter)
+        word_counter += 1
 
-        screen.clear()
         screen.refresh()
 
-        curses.start_color()
-        curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
-        curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
+    type_clock.set()
+
+    screen.clear()
+    screen.refresh()
+
+    player.save_score()
+    make_choice(player)
 
 
 def setup_pyther(stdscr):
@@ -328,13 +377,16 @@ def setup_pyther(stdscr):
     global draw, screen, words
 >>>>>>> ad2b5a7... Added words class,WIP
 
-    screen = stdscr
-    pyther = Pyther()
-    draw = Draw(screen)
+    screen = Screen(stdscr)
+    # draw = Draw(screen)
     words = Words()
 
+<<<<<<< HEAD
     pyther.make_choice()
 >>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
+=======
+    make_choice()
+>>>>>>> 37d86c3... Refactores main structure
 
 
 if __name__ == "__main__":
