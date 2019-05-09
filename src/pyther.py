@@ -6,7 +6,6 @@ import curses
 import threading
 import json
 from words import Words
-from draw import Draw
 from screen import Screen
 from player import Player
 
@@ -156,14 +155,14 @@ class Pyther(object):
         player = Player(draw.pl_input_y, draw.pl_input_x)
 =======
 def make_choice(player=None):
-    choice = draw.main_menu(screen, player)
+    choice = screen.draw_main_menu()
     if choice == 0:
         run()
     elif choice == 1:
         screen.addstr(int(screen.height / 2 - 1),
                       int(screen.width / 2 - 3), "TBA")
     elif choice == 2:
-        draw.high_scores(screen, get_scores("../scores"))
+        screen.high_scores(screen, get_scores("../scores"))
         make_choice()
     elif choice == 3:
         sys.exit()
@@ -239,24 +238,25 @@ def get_scores(file_path):
 =======
 
 def init_clock(clk):
-    draw.time += 1
+    screen.time += 1
     if not clk.is_set():
         threading.Timer(1, init_clock, [clk]).start()
-        return draw.time
+        return screen.time
 
 >>>>>>> 37d86c3... Refactores main structure
 
 def run():
-    player = Player(draw.pl_input_y, draw.pl_input_x)
+    player = Player()
 
     words.get_words()
 
-    draw.time = 0
+    screen.time = 0
     word_counter = 0
 
     type_clock = threading.Event()
     init_clock(type_clock)
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
             player.input(screen, type_clock)
@@ -275,11 +275,19 @@ def run():
         screen.clear()
         screen.border()
 >>>>>>> 37d86c3... Refactores main structure
+=======
+    screen.clear()
+    screen.border()
+
+    while screen.time < 61:
+        screen.update()
+>>>>>>> 2390c5b... Continues refactoring of main screen output
 
         if player.restart:
             type_clock.set()
             run()
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -304,10 +312,15 @@ def run():
         draw.main_panel(screen)
         draw.input_panel(screen)
 >>>>>>> 37d86c3... Refactores main structure
+=======
+        # screen.main_panel()
+        # screen.input_panel()
+>>>>>>> 2390c5b... Continues refactoring of main screen output
 
-        if draw.check_first_line(words._list):
+        if screen.check_first_line(words._list):
             word_counter = 0
 
+<<<<<<< HEAD
 <<<<<<< HEAD
         player.save_score()
 <<<<<<< HEAD
@@ -319,22 +332,26 @@ def run():
 =======
         draw.standard_words(screen, words._list)
 >>>>>>> 37d86c3... Refactores main structure
+=======
+        screen.standard_words(words._list)
+>>>>>>> 2390c5b... Continues refactoring of main screen output
 
-        player.input(screen, type_clock, words._list, word_counter)
+        player.input(screen.input_win, type_clock, words._list, word_counter)
         word_counter += 1
 
         screen.refresh()
 
     type_clock.set()
 
-    screen.clear()
-    screen.refresh()
+    screen.main_win.clear()
+    screen.main_win.refresh()
 
     player.save_score()
     make_choice(player)
 
 
 def setup_pyther(stdscr):
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -376,9 +393,11 @@ def setup_pyther(stdscr):
 =======
     global draw, screen, words
 >>>>>>> ad2b5a7... Added words class,WIP
+=======
+    global screen, words
+>>>>>>> 2390c5b... Continues refactoring of main screen output
 
     screen = Screen(stdscr)
-    # draw = Draw(screen)
     words = Words()
 
 <<<<<<< HEAD

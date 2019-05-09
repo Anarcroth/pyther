@@ -10,7 +10,7 @@ from datetime import datetime
 
 
 class Player(object):
-    def __init__(self, y, x):
+    def __init__(self):
         self.score = 0
         self.errors = 0
         self.accuracy = 0
@@ -21,16 +21,13 @@ class Player(object):
         self.restart = False
         self.has_input = True
 
-        self.y = y
-        self.x = x
-
     def input(self, screen, clk, words, word_counter):
         self.pl_str = ''
         self.has_input = True
 
         while self.has_input:
             try:
-                _input = screen.getch(self.y, self.x + len(self.pl_str))
+                _input = screen.getch(1, 1 + len(self.pl_str))
                 if self.is_submit(_input):
                     self.submit(words, word_counter)
                 elif self.is_delete(_input):
