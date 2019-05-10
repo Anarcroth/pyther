@@ -248,6 +248,10 @@ def init_clock(clk):
 def run():
     player = Player()
 
+    screen.main_win.clear()
+    screen.main_win.border()
+    screen.main_win.refresh()
+
     words.get_words()
 
     screen.time = 0
@@ -256,6 +260,7 @@ def run():
     type_clock = threading.Event()
     init_clock(type_clock)
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -279,6 +284,8 @@ def run():
     screen.clear()
     screen.border()
 
+=======
+>>>>>>> e5025a4... Adds word output to screen
     while screen.time < 61:
         screen.update()
 >>>>>>> 2390c5b... Continues refactoring of main screen output
@@ -287,6 +294,7 @@ def run():
             type_clock.set()
             run()
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -317,6 +325,8 @@ def run():
         # screen.input_panel()
 >>>>>>> 2390c5b... Continues refactoring of main screen output
 
+=======
+>>>>>>> e5025a4... Adds word output to screen
         if screen.check_first_line(words._list):
             word_counter = 0
 
@@ -336,10 +346,10 @@ def run():
         screen.standard_words(words._list)
 >>>>>>> 2390c5b... Continues refactoring of main screen output
 
-        player.input(screen.input_win, type_clock, words._list, word_counter)
+        player.input(screen.w_input,
+                     type_clock, words._list,
+                     word_counter)
         word_counter += 1
-
-        screen.refresh()
 
     type_clock.set()
 
@@ -347,7 +357,7 @@ def run():
     screen.main_win.refresh()
 
     player.save_score()
-    make_choice(player)
+    make_choice()
 
 
 def setup_pyther(stdscr):

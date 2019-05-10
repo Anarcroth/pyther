@@ -25,26 +25,21 @@ class Screen(metaclass=Singleton):
         self.main_win = screen
         self.height, self.width = screen.getmaxyx()
 
-        self.main_panel_y = int(self.height / 3)
-        self.main_panel_x = int(self.width / 3)
-        self.main_panel_x_ri = int(self.main_panel_x * 2)
-        self.input_panel_y = int(self.main_panel_y)
-        self.input_panel_x_lf = int(self.main_panel_x +
-                                    self.main_panel_x / 4)
-        self.input_panel_x_ri = int(self.main_panel_x * 2 -
-                                    self.main_panel_x / 4)
-        self.pl_input_y = self.input_panel_y + 1
-        self.pl_input_x = self.input_panel_x_lf + 1
-        self.max_panel_len = self.main_panel_x * 2 - 2
+        self.main_y = int(self.height / 3)
+        self.main_x = int(self.width / 3)
 
-        self.words_win = curses.newwin(5,
-                                       self.main_panel_x_ri,
-                                       self.main_panel_y,
-                                       self.main_panel_x)
-        self.input_win = curses.newwin(3,
-                                       self.input_panel_x_lf,
-                                       self.input_panel_y,
-                                       self.input_panel_x_lf)
+        self.w_words_maxw = self.main_x * 2 - 2
+        self.w_words = curses.newwin(5,                     # height
+                                     self.main_x,           # width
+                                     self.main_y - 5,       # Y
+                                     self.main_x)           # X
+
+        self.w_input = curses.newwin(3,                     # height
+                                     int(self.main_x -
+                                         self.main_x / 2),  # width
+                                     self.main_y,           # Y
+                                     int(self.main_x +
+                                         self.main_x / 4))  # X
 
         self.time = 1
         self.line_words = ['']
@@ -52,7 +47,7 @@ class Screen(metaclass=Singleton):
         self.init()
 
     def init(self):
-        curses.echo()
+        curses.noecho()
 
         self.main_win.clear()
         self.main_win.refresh()
@@ -65,19 +60,18 @@ class Screen(metaclass=Singleton):
         self.main_win.border()
 
     def clear(self):
-        self.main_win.clear()
-        self.input_win.clear()
-        self.words_win.clear()
+        self.w_input.clear()
+        self.w_words.clear()
 
     def border(self):
-        self.main_win.border()
-        self.input_win.border()
-        self.words_win.border()
+        self.w_input.border()
+        self.w_words.border()
 
     def update(self):
-        self.input_win.refresh()
-        self.words_win.refresh()
-        self.main_win.refresh()
+        self.clear()
+        self.border()
+        self.w_input.refresh()
+        self.w_words.refresh()
 
     def draw_main_menu(self):
         option = 0
@@ -120,8 +114,8 @@ class Screen(metaclass=Singleton):
         return selection
 
     def clock(self):
-        self.main_win.addstr(self.main_panel_y - 3,
-                             self.max_panel_len + 5,
+        self.main_win.addstr(self.main_y - 3,
+                             self.w_words_maxw + 5,
                              str(self.time))
 
     def score(self, player):
@@ -179,39 +173,40 @@ class Screen(metaclass=Singleton):
             self.main_win.refresh()
 
     def standard_words(self, words):
-        lines = 4
+        lines = 1
         prev_pos_x = 0
         current_word = True
         current_line = True
         self.line_words = []
         for word in words:
-            if self.main_panel_x + prev_pos_x + len(word) > self.max_panel_len:
+            if self.main_x + prev_pos_x + len(word) > self.w_words_maxw:
                 current_line = False
-                lines -= 1
+                lines += 1
                 prev_pos_x = 0
-            if current_line and word is not None:
+            if current_line is True and word is not None:
                 self.line_words.append(word)
-            if lines < 2:
+            if lines > 3:
                 break
             if words[word] is True:
-                self.main_win.addstr(self.main_panel_y - lines,
-                                     self.main_panel_x + prev_pos_x + 1,
-                                     word, curses.color_pair(1))
+                self.w_words.addstr(lines,
+                                    prev_pos_x + 1,
+                                    word, curses.color_pair(1))
             elif words[word] is False:
-                self.main_win.addstr(self.main_panel_y - lines,
-                                     self.main_panel_x + prev_pos_x + 1,
-                                     word, curses.color_pair(2))
+                self.w_words.addstr(lines,
+                                    prev_pos_x + 1,
+                                    word, curses.color_pair(2))
             elif not current_word:
-                self.main_win.addstr(self.main_panel_y - lines,
-                                     self.main_panel_x + prev_pos_x + 1,
-                                     word)
+                self.w_words.addstr(lines,
+                                    prev_pos_x + 1,
+                                    word)
             else:
-                self.main_win.addstr(self.main_panel_y - lines,
-                                     self.main_panel_x + prev_pos_x + 1,
-                                     word, curses.A_BOLD)
+                self.w_words.addstr(lines,
+                                    prev_pos_x + 1,
+                                    word, curses.A_BOLD)
                 current_word = False
 
             prev_pos_x += len(word) + 1
+        self.w_words.refresh()
 
     def check_first_line(self, words):
         if words[self.line_words[-1]] is not None:
