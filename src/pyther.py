@@ -252,6 +252,10 @@ def run():
     screen.main_win.border()
     screen.main_win.refresh()
 
+    # need to turn echo back on in order
+    # for player to see the typed characters
+    curses.echo()
+
     words.get_words()
 
     screen.time = 0
