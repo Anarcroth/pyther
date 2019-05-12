@@ -6,6 +6,7 @@ import curses.ascii
 import time
 import sys
 import json
+import csv
 from datetime import datetime
 
 
@@ -60,9 +61,9 @@ class Player(object):
 
     def delete(self, screen):
         if not self.pl_str:
-            screen.addstr(self.y, self.x + len(self.pl_str), '   ')
+            screen.addstr(1, 1 + len(self.pl_str), '   ')
         else:
-            screen.addstr(self.y, self.x + len(self.pl_str) - 1, '   ')
+            screen.addstr(1, 1 + len(self.pl_str) - 1, '   ')
         self.pl_str = self.pl_str[:-1]
 
     def is_restart(self, _input):
@@ -100,16 +101,18 @@ class Player(object):
 
     def save_score(self):
         self.get_final_stats()
+
         data = []
-        with open("../scores") as pl_file:
-            data = json.load(pl_file)
-            data.append({
-                "Date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "WPM": self.score,
-                "Accuracy": self.accuracy
-            })
+        with open('scores.csv', 'r', newline='') as sc_file:
+            data = list(csv.reader(sc_file, delimiter=','))
 
-        sorted_data = sorted(data, key=lambda k: k["WPM"], reverse=True)
+        new_score = [self.score,
+                     self.accuracy,
+                     datetime.now().strftime("%Y-%m-%d %H:%M:%S")]
+        data.append(new_score)
+        sorted_scores = sorted(data, key=lambda row: row[0], reverse=True)
 
-        with open("../scores", "w") as fi:
-            json.dump(sorted_data, fi)
+        with open('scores.csv', 'w+', newline='') as sc_file:
+            data = csv.writer(sc_file, delimiter=',')
+            for s in sorted_scores:
+                data.writerow(s)
