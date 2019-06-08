@@ -11,6 +11,7 @@ from player import Player
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 class Pyther(object):
 
 <<<<<<< HEAD
@@ -155,6 +156,9 @@ class Pyther(object):
         player = Player(draw.pl_input_y, draw.pl_input_x)
 =======
 def make_choice(player=None):
+=======
+def main_menu():
+>>>>>>> 9851ff0... Refactors screen output and general methodology of the app
     choice = screen.draw_main_menu()
     if choice == 0:
         run()
@@ -162,9 +166,6 @@ def make_choice(player=None):
         screen.addstr(int(screen.height / 2 - 1),
                       int(screen.width / 2 - 3), "TBA")
     elif choice == 2:
-        screen.high_scores(screen, get_scores("../scores"))
-        make_choice()
-    elif choice == 3:
         sys.exit()
 
 >>>>>>> 37d86c3... Refactores main structure
@@ -248,12 +249,10 @@ def init_clock(clk):
 def run():
     player = Player()
 
-    screen.main_win.clear()
-    screen.main_win.border()
-    screen.main_win.refresh()
+    screen.update(screen.main_win)
 
-    # need to turn echo back on in order
-    # for player to see the typed characters
+    # turn echo on to see
+    # typed characters
     curses.echo()
 
     words.get_words()
@@ -264,6 +263,7 @@ def run():
     type_clock = threading.Event()
     init_clock(type_clock)
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -293,6 +293,11 @@ def run():
     while screen.time < 61:
         screen.update()
 >>>>>>> 2390c5b... Continues refactoring of main screen output
+=======
+    while screen.time < 11:
+        screen.update(screen.w_input)
+        screen.update(screen.w_words)
+>>>>>>> 9851ff0... Refactors screen output and general methodology of the app
 
         if player.restart:
             type_clock.set()
@@ -357,13 +362,15 @@ def run():
 
     type_clock.set()
 
-    screen.main_win.clear()
-    screen.main_win.refresh()
+    # turn off echo while in menu
+    curses.noecho()
 
-    player.save_score()
-    make_choice()
+    screen.update(screen.main_win)
+    screen.score(player)
 
+    main_menu()
 
+<<<<<<< HEAD
 def setup_pyther(stdscr):
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -408,6 +415,10 @@ def setup_pyther(stdscr):
     global draw, screen, words
 >>>>>>> ad2b5a7... Added words class,WIP
 =======
+=======
+
+def init(stdscr):
+>>>>>>> 9851ff0... Refactors screen output and general methodology of the app
     global screen, words
 >>>>>>> 2390c5b... Continues refactoring of main screen output
 
@@ -415,12 +426,16 @@ def setup_pyther(stdscr):
     words = Words()
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     pyther.make_choice()
 >>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
 =======
     make_choice()
 >>>>>>> 37d86c3... Refactores main structure
+=======
+    main_menu()
+>>>>>>> 9851ff0... Refactors screen output and general methodology of the app
 
 
 if __name__ == "__main__":
-    curses.wrapper(setup_pyther)
+    curses.wrapper(init)

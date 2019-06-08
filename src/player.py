@@ -5,7 +5,6 @@ import curses
 import curses.ascii
 import time
 import sys
-import json
 import csv
 from datetime import datetime
 
@@ -98,21 +97,3 @@ class Player(object):
         else:
             self.accuracy = 0.0
             self.score = 0
-
-    def save_score(self):
-        self.get_final_stats()
-
-        data = []
-        with open('scores.csv', 'r', newline='') as sc_file:
-            data = list(csv.reader(sc_file, delimiter=','))
-
-        new_score = [self.score,
-                     self.accuracy,
-                     datetime.now().strftime("%Y-%m-%d %H:%M:%S")]
-        data.append(new_score)
-        sorted_scores = sorted(data, key=lambda row: row[0], reverse=True)
-
-        with open('scores.csv', 'w+', newline='') as sc_file:
-            data = csv.writer(sc_file, delimiter=',')
-            for s in sorted_scores:
-                data.writerow(s)

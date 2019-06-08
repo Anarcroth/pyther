@@ -4,23 +4,11 @@
 import curses
 import locale
 import sys
-import re
-import time
 
 locale.setlocale(locale.LC_ALL, '')
 
 
-class Singleton(type):
-    _instances = {}
-
-    def __call__(cls, *args, **kwargs):
-        if cls not in cls._instances:
-            cls._instances[cls] = super(Singleton, cls).__call__(*args,
-                                                                 **kwargs)
-        return cls._instances[cls]
-
-
-class Screen(metaclass=Singleton):
+class Screen():
     def __init__(self, screen):
         self.main_win = screen
         self.height, self.width = screen.getmaxyx()
@@ -49,35 +37,22 @@ class Screen(metaclass=Singleton):
     def init(self):
         curses.noecho()
 
-        self.main_win.clear()
-        self.main_win.refresh()
-
         curses.start_color()
         curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
         curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
 
-        self.main_win.clear()
-        self.main_win.border()
+        self.update(self.main_win)
 
-    def clear(self):
-        self.w_input.clear()
-        self.w_words.clear()
-
-    def border(self):
-        self.w_input.border()
-        self.w_words.border()
-
-    def update(self):
-        self.clear()
-        self.border()
-        self.w_input.refresh()
-        self.w_words.refresh()
+    def update(self, win):
+        win.clear()
+        win.border()
+        win.refresh()
 
     def draw_main_menu(self):
         option = 0
         selection = -1
         while selection < 0:
-            selected = [0] * 4
+            selected = [0] * 3
             selected[option] = curses.A_REVERSE
 
             self.main_win.addstr(int(self.height / 2 - 5),
@@ -89,23 +64,18 @@ class Screen(metaclass=Singleton):
             self.main_win.addstr(int(self.height / 2 - 1),
                                  int(self.width / 2 - 3),
                                  "Modes", selected[1])
-            self.main_win.addstr(int(self.height / 2),
-                                 int(self.width / 2 - 5),
-                                 "High scores", selected[2])
             self.main_win.addstr(int(self.height / 2 + 1),
                                  int(self.width / 2 - 2),
-                                 "Exit", selected[3])
-
-            # self.score(self.main_win)
+                                 "Exit", selected[2])
 
             self.main_win.refresh()
 
             try:
                 action = self.main_win.getch()
                 if action == curses.KEY_UP:
-                    option = (option - 1) % 4
+                    option = (option - 1) % 3
                 elif action == curses.KEY_DOWN:
-                    option = (option + 1) % 4
+                    option = (option + 1) % 3
                 elif action == ord("\n"):
                     selection = option
             except KeyboardInterrupt:
@@ -129,48 +99,7 @@ class Screen(metaclass=Singleton):
             self.main_win.addstr(int(self.height / 2 + 5),
                                  int(self.width / 2 - 7),
                                  "Accuracy: {}%".format(player.accuracy))
-
-    def high_scores(self, scores):
-        self.main_win.clear()
-        top_scores = []
-        for s in scores:
-            top_scores.append(re.sub("[{}\']", "", str(s)))
-        while True:
-            time.sleep(0.1)
-            self.main_win.border()
-            try:
-                self.main_win.addstr(int(self.height / 2 - 5),
-                                     int(self.width / 2 - 4),
-                                     "High scores")
-                self.main_win.addstr(int(self.height / 2 - 3),
-                                     int(self.width / 2),
-                                     "1.")
-                self.main_win.addstr(int(self.height / 2 - 2),
-                                     int(self.width / 2 - 25),
-                                     str(top_scores[0]))
-                self.main_win.addstr(int(self.height / 2),
-                                     int(self.width / 2),
-                                     "2.")
-                self.main_win.addstr(int(self.height / 2 + 1),
-                                     int(self.width / 2 - 25),
-                                     str(top_scores[1]))
-                self.main_win.addstr(int(self.height / 2 + 3),
-                                     int(self.width / 2),
-                                     "3.")
-                self.main_win.addstr(int(self.height / 2 + 4),
-                                     int(self.width / 2 - 25),
-                                     str(top_scores[2]))
-            except:
-                pass
-
-            try:
-                action = self.main_win.getch()
-                if action != -1:
-                    return
-            except KeyboardInterrupt:
-                sys.exit()
-
-            self.main_win.refresh()
+        self.main_win.refresh()
 
     def standard_words(self, words):
         lines = 1
