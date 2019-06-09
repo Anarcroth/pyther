@@ -8,7 +8,7 @@ import sys
 locale.setlocale(locale.LC_ALL, '')
 
 
-class Screen():
+class Screen(object):
     def __init__(self, screen):
         self.main_win = screen
         self.height, self.width = screen.getmaxyx()

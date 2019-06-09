@@ -268,6 +268,7 @@ def run():
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             player.input(screen, type_clock)
 <<<<<<< HEAD
             player.is_correct(words, word_counter)
@@ -295,6 +296,9 @@ def run():
 >>>>>>> 2390c5b... Continues refactoring of main screen output
 =======
     while screen.time < 11:
+=======
+    while screen.time < 61:
+>>>>>>> 6f12508... Adds score output after each game
         screen.update(screen.w_input)
         screen.update(screen.w_words)
 >>>>>>> 9851ff0... Refactors screen output and general methodology of the app
@@ -361,6 +365,7 @@ def run():
         word_counter += 1
 
     type_clock.set()
+    player.get_final_stats()
 
     # turn off echo while in menu
     curses.noecho()

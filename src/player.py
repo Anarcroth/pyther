@@ -5,8 +5,6 @@ import curses
 import curses.ascii
 import time
 import sys
-import csv
-from datetime import datetime
 
 
 class Player(object):
@@ -72,10 +70,10 @@ class Player(object):
 
     def restart(self, screen):
         self.restart = True
+        self.has_input = False
         screen.addstr(self.y, self.x, 'Restarting...')
         screen.refresh()
         time.sleep(2)
-        self.has_input = False
 
     def get_net_wpm(self):
         return (self.num_key_presses / 5 - self.errors)
