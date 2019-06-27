@@ -4,7 +4,6 @@
 import sys
 import curses
 import threading
-import json
 from words import Words
 from screen import Screen
 from player import Player
@@ -165,11 +164,13 @@ def main_menu():
     elif choice == 1:
         screen.addstr(int(screen.height / 2 - 1),
                       int(screen.width / 2 - 3), "TBA")
+        screen.update(screen.main_win)
     elif choice == 2:
         sys.exit()
 
 >>>>>>> 37d86c3... Refactores main structure
 
+<<<<<<< HEAD
 def get_scores(file_path):
     with open(file_path) as pl_file:
         data = json.load(pl_file)
@@ -238,8 +239,11 @@ def get_scores(file_path):
             screen.border()
 =======
 
+=======
+>>>>>>> 97461c1... Add clock timer
 def init_clock(clk):
     screen.time += 1
+    screen.clock()
     if not clk.is_set():
         threading.Timer(1, init_clock, [clk]).start()
         return screen.time

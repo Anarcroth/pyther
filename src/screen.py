@@ -28,6 +28,10 @@ class Screen(object):
                                      self.main_y,           # Y
                                      int(self.main_x +
                                          self.main_x / 4))  # X
+        input_y, input_x = self.w_input.getmaxyx()
+        self.w_time = curses.newwin(2, 2,
+                                    self.main_y + 1,
+                                    int(self.main_x) + 15)
 
         self.time = 1
         self.line_words = ['']
@@ -84,9 +88,9 @@ class Screen(object):
         return selection
 
     def clock(self):
-        self.main_win.addstr(self.main_y - 3,
-                             self.w_words_maxw + 5,
-                             str(self.time))
+        self.w_time.clear()
+        self.w_time.addstr(0, 0, str(self.time))
+        self.w_time.refresh()
 
     def score(self, player):
         if player is not None:
