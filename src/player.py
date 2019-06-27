@@ -26,6 +26,7 @@ class Player(object):
         while self.has_input:
             try:
                 _input = screen.getch(1, 1 + len(self.pl_str))
+                self.num_key_presses += 1
                 if self.is_submit(_input):
                     self.submit(words, word_counter)
                 elif self.is_delete(_input):
@@ -36,7 +37,6 @@ class Player(object):
                     raise KeyboardInterrupt
                 else:
                     self.pl_str += chr(_input)
-                    self.num_key_presses += 1
 
             except KeyboardInterrupt:
                 clk.set()
