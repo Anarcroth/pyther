@@ -40,12 +40,11 @@ class Screen(object):
 
     def init(self):
         curses.noecho()
+        curses.curs_set(0)
 
         curses.start_color()
         curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
         curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
-
-        self.w_time.leaveok(True)
 
         self.update(self.main_win)
 
@@ -90,7 +89,6 @@ class Screen(object):
         return selection
 
     def clock(self):
-        self.w_time.clear()
         self.w_time.addstr(0, 0, str(self.time))
         self.w_time.refresh()
 
@@ -141,7 +139,7 @@ class Screen(object):
                 current_word = False
 
             prev_pos_x += len(word) + 1
-        self.w_words.refresh()
+        self.w_words.noutrefresh()
 
     def check_first_line(self, words):
         if words[self.line_words[-1]] is not None:

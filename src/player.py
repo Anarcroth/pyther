@@ -29,6 +29,7 @@ class Player(object):
                 self.num_key_presses += 1
                 if self.is_submit(_input):
                     self.submit(words, word_counter)
+                    screen.addstr(1, 1, '            ')
                 elif self.is_delete(_input):
                     self.delete(screen)
                 elif self.is_restart(_input):

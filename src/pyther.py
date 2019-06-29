@@ -273,6 +273,7 @@ def run():
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             player.input(screen, type_clock)
 <<<<<<< HEAD
             player.is_correct(words, word_counter)
@@ -306,6 +307,13 @@ def run():
         screen.update(screen.w_input)
         screen.update(screen.w_words)
 >>>>>>> 9851ff0... Refactors screen output and general methodology of the app
+=======
+    screen.w_input.border()
+
+    while screen.time < 61:
+        screen.w_words.clear()
+        screen.w_words.border()
+>>>>>>> 71ff386... Add optimization to screen rendering
 
         if player.restart:
             type_clock.set()
@@ -367,6 +375,7 @@ def run():
                      type_clock, words._list,
                      word_counter)
         word_counter += 1
+        curses.doupdate()
 
     type_clock.set()
     player.get_final_stats()
