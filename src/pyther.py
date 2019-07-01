@@ -246,7 +246,6 @@ def init_clock(clk):
     screen.clock()
     if not clk.is_set():
         threading.Timer(1, init_clock, [clk]).start()
-        return screen.time
 
 >>>>>>> 37d86c3... Refactores main structure
 
@@ -311,7 +310,7 @@ def run():
     screen.w_input.border()
 
     while screen.time < 61:
-        screen.w_words.clear()
+        screen.w_words.erase()
         screen.w_words.border()
 >>>>>>> 71ff386... Add optimization to screen rendering
 
@@ -371,9 +370,12 @@ def run():
         screen.standard_words(words._list)
 >>>>>>> 2390c5b... Continues refactoring of main screen output
 
-        player.input(screen.w_input,
-                     type_clock, words._list,
-                     word_counter)
+        try:
+            player.input(screen.w_input, words._list, word_counter)
+        except KeyboardInterrupt as kberr:
+            type_clock.set()
+            sys.exit()
+
         word_counter += 1
         curses.doupdate()
 

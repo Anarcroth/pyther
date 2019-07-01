@@ -4,7 +4,6 @@
 import curses
 import curses.ascii
 import time
-import sys
 
 
 class Player(object):
@@ -19,29 +18,24 @@ class Player(object):
         self.restart = False
         self.has_input = True
 
-    def input(self, screen, clk, words, word_counter):
+    def input(self, screen, words, word_counter):
         self.pl_str = ''
         self.has_input = True
 
         while self.has_input:
-            try:
-                _input = screen.getch(1, 1 + len(self.pl_str))
-                self.num_key_presses += 1
-                if self.is_submit(_input):
-                    self.submit(words, word_counter)
-                    screen.addstr(1, 1, '            ')
-                elif self.is_delete(_input):
-                    self.delete(screen)
-                elif self.is_restart(_input):
-                    self.restart(screen)
-                elif _input == curses.ascii.ESC:
-                    raise KeyboardInterrupt
-                else:
-                    self.pl_str += chr(_input)
-
-            except KeyboardInterrupt:
-                clk.set()
-                sys.exit()
+            _input = screen.getch(1, 1 + len(self.pl_str))
+            self.num_key_presses += 1
+            if self.is_submit(_input):
+                self.submit(words, word_counter)
+                screen.addstr(1, 1, '            ')
+            elif self.is_delete(_input):
+                self.delete(screen)
+            elif self.is_restart(_input):
+                self.restart(screen)
+            elif _input == curses.ascii.ESC:
+                raise KeyboardInterrupt
+            else:
+                self.pl_str += chr(_input)
 
     def is_submit(self, _input):
         if self.pl_str and _input in [curses.ascii.SP, curses.ascii.NL]:

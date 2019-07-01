@@ -49,7 +49,7 @@ class Screen(object):
         self.update(self.main_win)
 
     def update(self, win):
-        win.clear()
+        win.erase()
         win.border()
         win.refresh()
 
