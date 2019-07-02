@@ -244,6 +244,9 @@ def get_scores(file_path):
 def init_clock(clk):
     screen.time += 1
     screen.clock()
+    if screen.time >= 60:
+        clk.set()
+        return
     if not clk.is_set():
         threading.Timer(1, init_clock, [clk]).start()
 
@@ -309,7 +312,7 @@ def run():
 =======
     screen.w_input.border()
 
-    while screen.time < 61:
+    while screen.time < 60:
         screen.w_words.erase()
         screen.w_words.border()
 >>>>>>> 71ff386... Add optimization to screen rendering
@@ -380,6 +383,10 @@ def run():
         curses.doupdate()
 
     type_clock.set()
+    finish(player)
+
+
+def finish(player):
     player.get_final_stats()
 
     # turn off echo while in menu
