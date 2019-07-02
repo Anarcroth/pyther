@@ -1,7 +1,7 @@
 # PYTHER (Python Typing Test)
 
 You know those tests, where you type some words as fast as you can and then it tells you how fast you typed?
-Why not have the same thing in the terminal?
+Yeah... Why not have the same thing in the terminal?
 
 ## Installation and launching
 
@@ -13,15 +13,12 @@ git clone https://github.com/Anarcroth/pyther.git && cd pyther
 python3 pyther.py
 ```
 
-See your scores in the auto-generated `scores` file.
-
-If you want to blank out your scores, or have problem saving them, replace the contents of the file with just `[]`
-
 ### How To
 
-There is one play mode. You type the words on the screen and then you check your `scores` file.
+There is one play mode (for now). You type the words on the screen and then you see your score.
 `Space` moves you to the next word. `F5` resets your current score and restars the game. `ESC` and `Ctrl+C` get you out of Pyther.
-Words colored in `red` are wrong, in `blue` are correct, the current word you are typing is in `bold`.
+
+Words colored in `red` are wrong, in `green` are correct, the current word you are typing is in `bold`.
 
 ##### Requirements
 `python3` with `curses`.
