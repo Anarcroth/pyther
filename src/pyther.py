@@ -162,10 +162,6 @@ def main_menu():
     if choice == 0:
         run()
     elif choice == 1:
-        screen.addstr(int(screen.height / 2 - 1),
-                      int(screen.width / 2 - 3), "TBA")
-        screen.update(screen.main_win)
-    elif choice == 2:
         sys.exit()
 
 >>>>>>> 37d86c3... Refactores main structure

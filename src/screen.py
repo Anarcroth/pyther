@@ -57,7 +57,7 @@ class Screen(object):
         option = 0
         selection = -1
         while selection < 0:
-            selected = [0] * 3
+            selected = [0] * 2
             selected[option] = curses.A_REVERSE
 
             self.main_win.addstr(int(self.height / 2 - 5),
@@ -66,21 +66,18 @@ class Screen(object):
             self.main_win.addstr(int(self.height / 2 - 2),
                                  int(self.width / 2 - 10),
                                  "Start typing (60 sec)", selected[0])
-            self.main_win.addstr(int(self.height / 2 - 1),
-                                 int(self.width / 2 - 3),
-                                 "Modes", selected[1])
             self.main_win.addstr(int(self.height / 2 + 1),
                                  int(self.width / 2 - 2),
-                                 "Exit", selected[2])
+                                 "Exit", selected[1])
 
             self.main_win.refresh()
 
             try:
                 action = self.main_win.getch()
                 if action == curses.KEY_UP:
-                    option = (option - 1) % 3
+                    option = (option - 1) % 2
                 elif action == curses.KEY_DOWN:
-                    option = (option + 1) % 3
+                    option = (option + 1) % 2
                 elif action == ord("\n"):
                     selection = option
             except KeyboardInterrupt:
