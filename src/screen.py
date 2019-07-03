@@ -100,6 +100,20 @@ class Screen(object):
             self.main_win.addstr(int(self.height / 2 + 5),
                                  int(self.width / 2 - 7),
                                  "Accuracy: {}%".format(player.accuracy))
+            self.main_win.addstr(int(self.height / 2 + 6),
+                                 int(self.width / 2 - 7),
+                                 "Wrong words:")
+            for w in player.wrong_words:
+                i = 1
+                n = 1
+                if i > 10:
+                    i = 1
+                    n += 1
+                self.main_win.addstr(int(self.height / 2 + 7 + n),
+                                     int(self.width / 2 - 15 + 1 + len(w)),
+                                     w)
+                i += 1
+
         self.main_win.refresh()
 
     def standard_words(self, words):

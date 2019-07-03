@@ -13,6 +13,9 @@ class Player(object):
         self.accuracy = 0
         self.correct_chars = 0
         self.num_key_presses = 0
+
+        self.wrong_words = []
+
         self.pl_str = ''
 
         self.restart = False
@@ -80,6 +83,7 @@ class Player(object):
             self.correct_chars += len(self.pl_str)
         else:
             words[current_word] = False
+            self.wrong_words.append(current_word)
             self.errors += 1
 
     def get_final_stats(self):
