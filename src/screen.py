@@ -4,8 +4,13 @@
 import curses
 import locale
 import sys
+import logging
 
 locale.setlocale(locale.LC_ALL, '')
+
+logging.basicConfig(filename="logger",
+                    filemode='a',
+                    level=logging.INFO)
 
 
 class Screen(object):
@@ -78,7 +83,7 @@ class Screen(object):
                     option = (option - 1) % 2
                 elif action == curses.KEY_DOWN:
                     option = (option + 1) % 2
-                elif action == ord("\n"):
+                elif action == curses.ascii.NL:
                     selection = option
             except KeyboardInterrupt:
                 sys.exit()
@@ -103,16 +108,14 @@ class Screen(object):
             self.main_win.addstr(int(self.height / 2 + 6),
                                  int(self.width / 2 - 7),
                                  "Wrong words:")
-            for w in player.wrong_words:
-                i = 1
-                n = 1
-                if i > 10:
-                    i = 1
-                    n += 1
-                self.main_win.addstr(int(self.height / 2 + 7 + n),
-                                     int(self.width / 2 - 15 + 1 + len(w)),
-                                     w)
-                i += 1
+            logging.debug("the wrong words are ")
+            logging.debug(player.wrong_words)
+            prev_word_pos = 0
+            for w, plw in player.wrong_words.items():
+                self.main_win.addstr(int(self.height / 2 + 7),
+                                     int(self.width / 2 - 19 + prev_word_pos),
+                                     w + ":" + plw)
+                prev_word_pos += len(w) + len(plw) + 2
 
         self.main_win.refresh()
 
