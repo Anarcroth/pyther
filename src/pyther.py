@@ -9,16 +9,10 @@ from screen import Screen
 from player import Player
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 class Pyther(object):
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     def __init__(self, file_path):
         self.time = 0
-
         self.line_words = ['']
 
     def make_choice(self, stdscr, draw, player):
@@ -26,20 +20,6 @@ class Pyther(object):
         if choice == 0:
             self.init_pyther_screen()
             self.run(draw, player)
-=======
-    def make_choice(self):
-        choice = draw.main_menu(screen)
-=======
-    def make_choice(self, player = None):
-=======
-    def make_choice(self, player=None):
->>>>>>> 83cf9bb... Formats code to pip and adds curses key codes
-        choice = draw.main_menu(screen, player)
->>>>>>> c8d258d... Added score when game is finished
-        if choice == 0:
-            self.init_pyther_screen()
-            self.run()
->>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
         elif choice == 1:
             screen.addstr(int(self.height / 2 - 1),
                           int(self.width / 2 - 3), "TBA")
@@ -49,13 +29,7 @@ class Pyther(object):
         elif choice == 3:
             sys.exit()
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    #def randomize_words(self):
-
-    def inp(self, player, _input, pl_str, word_counter):
+    def input(self, player, _input, pl_str, word_counter):
         if _input != -1:
             if _input == 32: # SPACE
                 player.is_correct(words, word_counter, pl_str)
@@ -71,7 +45,7 @@ class Pyther(object):
                 pl_str += chr(_input)
                 player.num_key_presses += 1
 
-    def drwords(self):
+    def draw_words(self):
         lines = 4
         prev_pos_x = 0
         current_word = True
@@ -95,9 +69,7 @@ class Pyther(object):
             else:
                 screen.addstr(main_panel_y - lines, main_panel_x + prev_pos_x + 1, word, curses.A_BOLD)
                 current_word = False
-
             prev_pos_x += len(word + " ")
-
 
     def check_first_line(self):
         if words[self.line_words[-1]] != None:
@@ -106,158 +78,73 @@ class Pyther(object):
         return False
 
     def run(self, player):
-        #type_clock = threading.Event()
-        #draw.init_clock(stdscr, type_clock)
-
+        words = open("./word_lists/200.txt").read().split("\n")
         word_counter = 0
-        #self.randomize_words()
 
         screen.nodelay(True)
         curses.echo()
-=======
-    def run(self):
-        words = open("./word_lists/200.txt").read().split("\n")
-=======
-=======
-    def get_scores(file_path):
-        with open(file_path, "r") as pl_file:
-            for line in pl_file:
-                #TODO
-                return
-=======
+
     def get_scores(self, file_path):
         with open(file_path) as pl_file:
             data = json.load(pl_file)
             return data[:3]
->>>>>>> 6f3dda2... Added json files for scores, where now everthing outputst properly
 
->>>>>>> 51f3a16... WIP: output the top 3 best scores from the third menu option
     def init_clock(self, clk):
         draw.time += 1
         if not clk.is_set():
             threading.Timer(1, self.init_clock, [clk]).start()
         return draw.time
 
-<<<<<<< HEAD
-
-<<<<<<< HEAD
     def get_words_from(self, path):
         words = open(path).read().split("\n")
->>>>>>> da75115... General bug fixes and exception handling
         random.shuffle(words)
         return { w : None for w in words }
 
-=======
->>>>>>> ad2b5a7... Added words class,WIP
-=======
->>>>>>> 83cf9bb... Formats code to pip and adds curses key codes
     def run(self):
         player = Player(draw.pl_input_y, draw.pl_input_x)
-=======
-def make_choice(player=None):
-=======
-def main_menu():
->>>>>>> 9851ff0... Refactors screen output and general methodology of the app
-    choice = screen.draw_main_menu()
-    if choice == 0:
-        run()
-    elif choice == 1:
-        sys.exit()
 
->>>>>>> 37d86c3... Refactores main structure
-
-<<<<<<< HEAD
-def get_scores(file_path):
-    with open(file_path) as pl_file:
-        data = json.load(pl_file)
-        return data[:3]
-
-<<<<<<< HEAD
         draw.time = 0
         word_counter = 0
->>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
         pl_str = ''
-=======
-=======
         type_clock = threading.Event()
         self.init_clock(type_clock)
 
->>>>>>> 992da1c... Minot changes and fixes
         while draw.time < 61:
-<<<<<<< HEAD
-            time.sleep(1)
             stdscr.clear()
             stdscr.border()
->>>>>>> b004280... Added time sleep to 1
 
         while True:
             time.sleep(0.09)
             screen.clear()
             screen.border()
 
-            #draw.main_panel(stdscr)
-            #draw.input_panel(stdscr)
-
             if self.check_first_line():
                 word_counter = 0
 
-<<<<<<< HEAD
-<<<<<<< HEAD
             self.drwords()
 
             _input = screen.getch(pl_input_y, pl_input_x + len(pl_str))
             self.inp(player, _input, pl_str, word_counter)
-            #player.input(stdscr, draw.pl_input_y, draw.pl_input_x)
 
-<<<<<<< HEAD
-=======
-=======
-        while draw.time < 60:
->>>>>>> 8ae3411... Added ESC char to exit pyther
-=======
-        while draw.time < 10:
->>>>>>> 0082a94... Bugfixes for words, game restart, exceptions for scores that are 0
-=======
-        while draw.time < 61:
->>>>>>> e964d78... Updated README and LICENSE
-=======
-        while draw.time < 10:
->>>>>>> c8d258d... Added score when game is finished
-=======
-        while draw.time < 61:
->>>>>>> 97b8c70... Fixed game length, fixed readme
-            screen.clear()
-            screen.border()
-=======
+    def init_clock(clk):
+        screen.time += 1
+        screen.clock()
+        if screen.time >= 60:
+            clk.set()
+            return
+        if not clk.is_set():
+            threading.Timer(1, init_clock, [clk]).start()
+        else:
+            screen.w_time.clear()
+            screen.w_time.refresh()
 
-=======
->>>>>>> 97461c1... Add clock timer
-def init_clock(clk):
-    screen.time += 1
-    screen.clock()
-    if screen.time >= 60:
-        clk.set()
-        return
-    if not clk.is_set():
-        threading.Timer(1, init_clock, [clk]).start()
-    else:
-        screen.w_time.clear()
-        screen.w_time.refresh()
-
->>>>>>> 37d86c3... Refactores main structure
 
 def run():
     player = Player()
 
     screen.update(screen.main_win)
 
-    # turn echo on to see
-    # typed characters
     curses.echo()
 
     words.get_words()
@@ -268,109 +155,40 @@ def run():
     type_clock = threading.Event()
     init_clock(type_clock)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
             player.input(screen, type_clock)
-<<<<<<< HEAD
             player.is_correct(words, word_counter)
->>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
-=======
             player.is_correct(words._list, word_counter)
->>>>>>> ad2b5a7... Added words class,WIP
-=======
             player.input(screen, type_clock, words._list, word_counter)
->>>>>>> 992da1c... Minot changes and fixes
             word_counter += 1
-=======
-    while draw.time < 61:
-        screen.clear()
-        screen.border()
->>>>>>> 37d86c3... Refactores main structure
-=======
-    screen.clear()
-    screen.border()
 
-=======
->>>>>>> e5025a4... Adds word output to screen
     while screen.time < 61:
-        screen.update()
->>>>>>> 2390c5b... Continues refactoring of main screen output
-=======
-    while screen.time < 11:
-=======
-    while screen.time < 61:
->>>>>>> 6f12508... Adds score output after each game
         screen.update(screen.w_input)
         screen.update(screen.w_words)
->>>>>>> 9851ff0... Refactors screen output and general methodology of the app
-=======
     screen.w_input.border()
 
     while not type_clock.is_set():
         screen.w_words.erase()
         screen.w_words.border()
->>>>>>> 71ff386... Add optimization to screen rendering
 
         if player.restart:
             type_clock.set()
             run()
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        #type_clock.set()
-        #del type_clock
-
         player.save_score()
         self.make_choice(screen)
-=======
-=======
-        #type_clock.wait
->>>>>>> 36f7f0c... Handeled KeyboardInterrupt
-=======
         type_clock.wait(1)
->>>>>>> 0082a94... Bugfixes for words, game restart, exceptions for scores that are 0
-=======
->>>>>>> da75115... General bug fixes and exception handling
         type_clock.set()
-=======
         draw.main_panel(screen)
         draw.input_panel(screen)
->>>>>>> 37d86c3... Refactores main structure
-=======
-        # screen.main_panel()
-        # screen.input_panel()
->>>>>>> 2390c5b... Continues refactoring of main screen output
 
-=======
->>>>>>> e5025a4... Adds word output to screen
         if screen.check_first_line(words._list):
             word_counter = 0
 
-<<<<<<< HEAD
-<<<<<<< HEAD
         player.save_score()
-<<<<<<< HEAD
         self.make_choice()
->>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
-=======
         self.make_choice(player)
->>>>>>> c8d258d... Added score when game is finished
-=======
         draw.standard_words(screen, words._list)
->>>>>>> 37d86c3... Refactores main structure
-=======
         screen.standard_words(words._list)
->>>>>>> 2390c5b... Continues refactoring of main screen output
 
         try:
             player.input(screen.w_input, words._list, word_counter)
@@ -395,72 +213,15 @@ def finish(player):
 
     main_menu()
 
-<<<<<<< HEAD
-def setup_pyther(stdscr):
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    global screen
-    screen = stdscr.subwin(0,0)
-    screen.box()
-
-    global height, width, main_panel_y, main_panel_x, input_panel_y, input_panel_x_lf, input_panel_x_ri, pl_input_y, pl_input_x, max_panel_len, words
-
-    height, width = screen.getmaxyx()
-    main_panel_y, main_panel_x = int(height / 3), int(width / 3)
-
-    input_panel_y = int(main_panel_y)
-    input_panel_x_lf = int(main_panel_x + main_panel_x / 4)
-    input_panel_x_ri = int(main_panel_x * 2 - main_panel_x / 4)
-
-    pl_input_y, pl_input_x = input_panel_y + 1, input_panel_x_lf + 1
-    max_panel_len = main_panel_x * 2 - 2
-
-    words = open("./word_lists/200.txt").read().split("\n")
-    random.shuffle(words)
-    words = { w : None for w in words }
-
-    pyther = Pyther("./word_lists/200.txt")
-    draw = Draw(stdscr)
-    player = Player()
-    pyther.init_pyther_screen()
-    pyther.run(player)
-=======
-    global draw, player, words, screen
-=======
-    global draw, player, screen
-    global words
->>>>>>> 0082a94... Bugfixes for words, game restart, exceptions for scores that are 0
-=======
-    global draw, screen
->>>>>>> da75115... General bug fixes and exception handling
-=======
-    global draw, screen, words
->>>>>>> ad2b5a7... Added words class,WIP
-=======
-=======
-
 def init(stdscr):
->>>>>>> 9851ff0... Refactors screen output and general methodology of the app
     global screen, words
->>>>>>> 2390c5b... Continues refactoring of main screen output
 
     screen = Screen(stdscr)
     words = Words()
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     pyther.make_choice()
->>>>>>> 3bb0c9e... Refactored code to use globals instead of passing big objects
-=======
     make_choice()
->>>>>>> 37d86c3... Refactores main structure
-=======
     main_menu()
->>>>>>> 9851ff0... Refactors screen output and general methodology of the app
-
 
 if __name__ == "__main__":
     curses.wrapper(init)
