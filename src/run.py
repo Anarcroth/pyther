@@ -19,7 +19,6 @@ def start():
     screen.time = 0
     word_counter = 0
 
-    # TODO fix clock to stop game at 60 seconds
     type_clock = threading.Event()
     init_clock(type_clock)
 
@@ -39,6 +38,8 @@ def start():
         word_counter += 1
         curses.doupdate()
 
+    # Set the clock here so that if there is a refresh (F5) or a cancel,
+    # the clock can stop counting.
     type_clock.set()
     finish(player)
 
@@ -54,7 +55,7 @@ def make_choice():
 def init_clock(clk):
     screen.time += 1
     screen.clock()
-    if screen.time >= 60:
+    if screen.time >= 61:
         clk.set()
         return
     if not clk.is_set():
@@ -71,7 +72,7 @@ def finish(player):
     screen.update(screen.main_win)
     screen.score(player)
 
-    screen.draw_main_menu()
+    make_choice()
 
 
 def init(stdscr):
