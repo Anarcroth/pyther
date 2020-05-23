@@ -8,6 +8,7 @@ from words import Words
 from screen import Screen
 from player import Player
 
+TYPING_TIME = 60
 
 def start():
     player = Player()
@@ -22,7 +23,7 @@ def start():
     type_clock = threading.Event()
     init_clock(type_clock)
 
-    while screen.time < 61:
+    while screen.time < TYPING_TIME:
         screen.update(screen.w_input)
         screen.update(screen.w_words)
         screen.standard_words(words._list)
@@ -38,10 +39,7 @@ def start():
         word_counter += 1
         curses.doupdate()
 
-    # Set the clock here so that if there is a refresh (F5) or a cancel,
-    # the clock can stop counting.
-    type_clock.set()
-    finish(player)
+    finish(player, type_clock)
 
 
 def make_choice():
@@ -55,7 +53,7 @@ def make_choice():
 def init_clock(clk):
     screen.time += 1
     screen.clock()
-    if screen.time >= 61:
+    if screen.time >= TYPING_TIME:
         clk.set()
         return
     if not clk.is_set():
@@ -65,7 +63,11 @@ def init_clock(clk):
         screen.w_time.refresh()
 
 
-def finish(player):
+def finish(player, clk):
+    # Set the clock here so that if there is a refresh (F5) or a cancel,
+    # the clock can stop counting.
+    clk.set()
+
     player.get_final_stats()
     curses.noecho()
 
@@ -76,9 +78,8 @@ def finish(player):
 
 
 def init(stdscr):
-    global screen, words, time
+    global screen, words
 
-    time = 0
     screen = Screen(stdscr)
     words = Words()
 
