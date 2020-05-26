@@ -24,8 +24,7 @@ def start():
     init_clock(type_clock)
 
     while screen.time < TYPING_TIME:
-        screen.update(screen.w_input)
-        screen.update(screen.w_words)
+        screen.show()
         screen.standard_words(words._list)
 
         if screen.check_first_line(words._list):

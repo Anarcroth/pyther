@@ -53,6 +53,10 @@ class Screen(object):
 
         self.update(self.main_win)
 
+    def show(self):
+        self.update(self.w_input)
+        self.update(self.w_words)
+
     def update(self, win):
         win.erase()
         win.border()
