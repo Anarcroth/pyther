@@ -34,9 +34,9 @@ class Screen(object):
                                      int(self.main_x +
                                          self.main_x / 4))  # X
         input_y, input_x = self.w_input.getmaxyx()
-        self.w_time = curses.newwin(2, 2,
-                                    self.main_y + 1,
-                                    int(self.main_x) + 15)
+        self.w_time = curses.newwin(3, 4,
+                                    self.main_y,
+                                    int(self.main_x) + 13)
 
         self.time = 1
         self.line_words = ['']
@@ -91,7 +91,8 @@ class Screen(object):
         return selection
 
     def clock(self):
-        self.w_time.addstr(0, 0, str(self.time))
+        self.w_time.addstr(1, 1, str(self.time))
+        self.w_time.border()
         self.w_time.refresh()
 
     def score(self, player):
